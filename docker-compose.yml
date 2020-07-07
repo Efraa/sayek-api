@@ -1,0 +1,57 @@
+version: '3.1'
+
+services:
+  app:
+    build: .
+    container_name: ${APP_NAME}_API
+    ports:
+      - ${PORT}:${PORT}
+    networks:
+      - app
+    env_file:
+      - .env
+    depends_on:
+      - db
+    volumes:
+      - .:/app/
+      - /app/build
+    restart: always
+
+  redis:
+    image: redis
+    restart: always
+    container_name: ${APP_NAME}_REDIS
+    networks:
+      - app
+
+  db:
+    image: postgres
+    container_name: ${APP_NAME}_DB
+    env_file:
+      - .env
+    environment:
+      POSTGRES_PASSWORD: "${DB_PASSWORD}"
+      POSTGRES_USER: "${DB_USER}"
+      POSTGRES_DB: "${DB_NAME}"
+    networks:
+      - app
+    ports:
+      - 5432:5432
+    restart: always
+
+  adminer:
+    image: adminer
+    container_name: ${APP_NAME}_ADMIN
+    restart: always
+    ports:
+      - 8080:8080
+    env_file:
+      - .env
+    depends_on:
+      - db
+    networks:
+      - app
+
+networks:
+  app:
+    driver: bridge

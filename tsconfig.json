@@ -1,0 +1,32 @@
+{
+  "compilerOptions": {
+    "target": "es6",
+    "module": "commonjs",
+    "strict": true,
+    "esModuleInterop": true,
+    "noImplicitAny": false,
+    "sourceMap": true,
+    "removeComments": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "allowSyntheticDefaultImports": true,
+    "strictPropertyInitialization": false,
+    "forceConsistentCasingInFileNames": true,
+    "skipLibCheck": true,
+    "baseUrl": "./",
+    "outDir": "build",
+    "typeRoots" : [
+      "./node_modules/@types",
+      "src/@types"
+    ],
+  },
+  "exclude": [
+    "**/node_modules/*",
+    "**/*.spec.ts",
+    ".vscode/*"
+  ],
+  "include": [
+    "src/**/*",
+    "__tests__/**/*"
+  ]
+}
