@@ -1,10 +1,12 @@
 import 'reflect-metadata'
+import dotenv from 'dotenv'
 import { DatabaseConnection } from './database/DatabaseConnection'
 import express, { Application } from 'express'
 import compression from 'compression'
 import { Routes } from './http'
 import morgan from 'morgan'
 import cors from 'cors'
+dotenv.config()
 
 const app: Application = express()
 

@@ -1,13 +1,13 @@
 import { UserService } from '../services/UserService'
-import { UserSocket } from '../sockets/UserSocket'
+import { SocketServer } from '../../socket/SocketServer'
 
 export class UserController {
   constructor(
     private _userService: UserService,
-    private _userSocket: UserSocket,
+    private _socket: SocketServer,
   ) {}
 
-  public async create(userPayload: UserPayload) {
-    return []
+  public async create(userPayload?: UserPayload) {
+    return { msg: 'test' }
   }
 }

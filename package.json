@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node build/server.js",
     "build": "tsc",
-    "watch": "tsc-watch --onSuccess \"node build/server.js\""
+    "watch": "tsc-watch --onSuccess \"node build/server.js\"",
+    "dev": "docker-compose up --build -d && yarn watch"
   },
   "engines": {
     "node": ">=12.10.0"

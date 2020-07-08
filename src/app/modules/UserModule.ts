@@ -32,7 +32,7 @@ export class UserModule {
 
   get controller(): UserController {
     return !this._controller ?
-      (this._controller = new UserController(this.service, socket.userSocket))
+      (this._controller = new UserController(this.service, socket))
       : this._controller
   }
 }

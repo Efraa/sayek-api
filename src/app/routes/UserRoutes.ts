@@ -17,11 +17,11 @@ export class UserRoutes extends BaseRoutes {
   public test: RequestHandler = (req: Request, res: Response) =>
     RouteMethod.build({
       resolve: async () => {
-        // const userLogged = await this._UserController.userLoggedWithAccountInfo(req.user.id)
-        // if (userLogged)
-        return res
-          .status(statusCodes.OK)
-          .send(ResponseHandler.build({ msg: 'test from user' }, false))
+        const userLogged = await this._userController.create()
+        if (userLogged)
+          return res
+            .status(statusCodes.OK)
+            .send(ResponseHandler.build(userLogged, false))
       }, req, res
     })
 }
