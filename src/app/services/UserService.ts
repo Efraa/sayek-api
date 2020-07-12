@@ -1,5 +1,4 @@
 import { User } from 'src/database/entities/User'
-import { ErrorHandler, statusCodes } from '../../http'
 import { UserMapper } from '../domain/mappers/UserMapper'
 import { UserRepository } from '../repositories/UserRepository'
 import { UserDTO } from '../domain/dtos/UserDTO'
@@ -10,11 +9,14 @@ export class UserService {
     private _userMapper: UserMapper,
   ) {}
 
-  async getAll(query: {
-    userId: number,
-    perPage?: number,
-    page?: number,
-  }): Promise<UserDTO[]> {
-    return this._userRepository.getAll()
-  }
+  mapToEntity = async (userPayload: UserPayload): Promise<User> =>
+    await this._userMapper.mapToEntity(userPayload)
+
+  create = async (userEntity: User): Promise<UserDTO> =>
+    await this._userRepository.save(userEntity)
+      .then(user => this._userMapper.mapToDTO(user))
+
+  getBySocialNetwork = async (query: { networkType: string, networkId: number }) =>
+    await this._userRepository.getBySocialNetwork(query)
+      .then(user => user ? this._userMapper.mapToDTO(user) : undefined)
 }

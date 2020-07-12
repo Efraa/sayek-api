@@ -1,4 +1,4 @@
-import { Repository, FindManyOptions, getRepository } from 'typeorm'
+import { Repository, getRepository } from 'typeorm'
 import { User } from '../../database/entities/User'
 
 export class UserRepository {
@@ -8,8 +8,10 @@ export class UserRepository {
     this.repo = getRepository(User)
   }
 
-  public getAll = async (query: FindManyOptions<User> = {}): Promise<User[]> =>
-    await this.repo.find({
-      cache: true
-    })
+  create = async (payload: UserPayload) => this.repo.create(payload)
+
+  save = async (user: User) => await this.repo.save(user)
+
+  getBySocialNetwork = async (where: { networkType: string, networkId: number }) =>
+    await this.repo.findOne({ where })
 }

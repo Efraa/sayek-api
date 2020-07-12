@@ -5,5 +5,17 @@ export class UserDTO {
   id: number
 
   @MapProp()
-  email: string
+  name: string
+
+  @MapProp()
+  email?: string
+
+  @MapProp()
+  networkType: string
+
+  @MapProp()
+  networkId: string
+
+  @MapProp()
+  data: object | null
 }

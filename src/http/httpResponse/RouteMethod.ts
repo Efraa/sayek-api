@@ -1,6 +1,6 @@
 import { validationResult } from 'express-validator'
 import { ResponseHandler, statusCodes } from '..'
-import { Logger } from '../../app/helpers/logging/Logger'
+import { Logger } from '../../helpers/logging/Logger'
 
 export class RouteMethod {
   public static async build({ req, res, resolve }: any) {

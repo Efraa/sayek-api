@@ -6,6 +6,7 @@ import { userModule } from '../app/modules/UserModule'
 
 // Routes
 import { UserRoutes } from '../app/routes/UserRoutes'
+import { Paths } from '../app/routes/Paths'
 
 export class Routes {
   static router: Router = Router()
@@ -14,6 +15,6 @@ export class Routes {
     Routes.router.use(moduleRoutes.domain, moduleRoutes.routes)
 
   static build = () => {
-    Routes.add(new UserRoutes('/users', userModule.controller))
+    Routes.add(new UserRoutes(Paths.users.domain, userModule.controller))
   }
 }

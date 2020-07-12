@@ -1,7 +1,11 @@
+import dotenv from 'dotenv'
 import { BaseRoutes } from '../../http/BaseRoutes'
 import { ResponseHandler, RouteMethod, statusCodes } from '../../http'
 import { Response, RequestHandler, Request } from 'express'
 import { UserController } from '../controllers/UserController'
+import { facebookMiddle, googleMiddle } from '../../middlewares/passport'
+import { Paths } from './Paths'
+dotenv.config()
 
 export class UserRoutes extends BaseRoutes {
 
@@ -11,17 +15,22 @@ export class UserRoutes extends BaseRoutes {
   }
 
   addRoutes() {
-    this.api.post('/test', this.test)
+    this.api.get(Paths.users.authFacebook, facebookMiddle.authenticate())
+    this.api.get(`${Paths.users.authFacebook}/cb`, facebookMiddle.authenticateCallBack(), this.authOrCreate)
+    this.api.get(Paths.users.authGoogle, googleMiddle.authenticate())
+    this.api.get(`${Paths.users.authGoogle}/cb`, googleMiddle.authenticateCallBack(), this.authOrCreate)
   }
 
-  public test: RequestHandler = (req: Request, res: Response) =>
+  public authOrCreate: RequestHandler = (req: Request, res: Response) =>
     RouteMethod.build({
       resolve: async () => {
-        const userLogged = await this._userController.create()
-        if (userLogged)
-          return res
-            .status(statusCodes.OK)
-            .send(ResponseHandler.build(userLogged, false))
+        if (req.user) {
+          await this._userController.authOrCreate(req.user)
+            .then(token => {
+              res.setHeader('authorization', token)
+              res.redirect(`${process.env.AGENT_CLIENT}/?t=${token}`)
+            })
+        }
       }, req, res
     })
 }

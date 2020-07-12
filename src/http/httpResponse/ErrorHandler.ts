@@ -1,4 +1,4 @@
-import { Logger } from '../../app/helpers/logging/Logger'
+import { Logger } from '../../helpers/logging/Logger'
 
 const build = (statusCode: number, message: string | string[]) => {
   Logger.info(message)

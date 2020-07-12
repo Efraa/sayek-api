@@ -1,7 +1,7 @@
 import { Response, NextFunction, Request } from 'express'
 import { ResponseHandler, statusCodes } from '../http'
-import { JWToken } from '../app/helpers/JWToken'
-import { Logger } from '../app/helpers/logging/Logger'
+import { JWToken } from '../helpers/JWToken'
+import { Logger } from '../helpers/logging/Logger'
 
 export const ensureAuth = async (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -16,7 +16,7 @@ export const ensureAuth = async (req: Request, res: Response, next: NextFunction
 
     const isValidToken = await JWToken.verifyToken(token)
     if (isValidToken) {
-      req.user = isValidToken.user
+      req.userLogged = isValidToken.user
       next()
     }
   } catch (e) {
