@@ -9,7 +9,7 @@ const config = {
   database: process.env.DB_NAME,
   port: process.env.DB_PORT,
   synchronize: process.env.SYNCHRONIZE,
-  logging: false,
+  logging: true,
   ssl: process.env.SSL,
   entities: ["build/database/entities/**/*.js"],
   cache: process.env.TYPEORM_CACHE_ENABLE ? {

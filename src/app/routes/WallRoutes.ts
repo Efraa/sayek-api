@@ -18,6 +18,7 @@ export class WallRoutes extends BaseRoutes {
     this.api.post(Paths.walls.create, [ensureAuth, ...validators.create], this.create)
     this.api.post(Paths.walls.unjoin, [ensureAuth, ...validators.unjoin], this.unjoin)
     this.api.post(Paths.walls.join, [ensureAuth, ...validators.unjoin], this.join)
+    this.api.get(Paths.walls.list, ensureAuth, this.list)
   }
 
   public create: RequestHandler = (req: Request, res: Response) =>
@@ -53,6 +54,22 @@ export class WallRoutes extends BaseRoutes {
           return res
             .status(statusCodes.OK)
             .send(ResponseHandler.build(wall, false))
+      }, req, res
+    })
+
+  public list: RequestHandler = (req: Request, res: Response) =>
+    RouteMethod.build({
+      resolve: async () => {
+        const { page, perPage } = req.query
+        const list = await this._wallController.list({
+          userId: req.userLogged?.id,
+          page: page as any,
+          perPage: perPage as any,
+        })
+        if (list)
+          return res
+            .status(statusCodes.OK)
+            .send(ResponseHandler.build(list, false))
       }, req, res
     })
 }

@@ -26,24 +26,34 @@ export class WallController {
   }
 
   async unjoin(wallId: number, memberId: number) {
-    const wall = await this._wallService.getByIdWithMembers(wallId)
-    if (!wall)
-      throw ErrorHandler.build(statusCodes.BAD_REQUEST, WallMessages.WALL_NOT_FOUND)
-
-    return await this._wallService.unjoin(wall, memberId)
+    const unjoined = await this._wallService.unjoin(wallId, memberId)
+    if (!unjoined)
+      throw ErrorHandler.build(statusCodes.BAD_REQUEST, WallMessages.UNJOIN_ERROR)
+    
+    return unjoined
   }
 
   async join(wallId: number, memberId: number) {
-    const member = await this._userService.getById(memberId)
-    const wall = await this._wallService.getByIdWithMembers(wallId)
-    const memberIsJoined = await this._wallService.memberIsJoined(wallId, memberId)
-
-    if (memberIsJoined)
-      throw ErrorHandler.build(statusCodes.BAD_REQUEST, WallMessages.JOINED)
-
-    if (!member || !wall)
-      throw ErrorHandler.build(statusCodes.BAD_REQUEST, WallMessages.WALL_NOT_FOUND)
-
-    return await this._wallService.join(wall, member)
+    const joined = await this._wallService.join(wallId, memberId)
+    if (!joined)
+      throw ErrorHandler.build(statusCodes.BAD_REQUEST, WallMessages.JOINED_ERROR)
+    
+    return joined
   }
+
+  list = async (query: {
+    page?: number,
+    perPage?: number,
+    userId: number,
+  }) => await this._wallService.list(query)
+
+  // async get(wallId: number, memberId: number) {
+  //   const memberIsJoined = await this._wallService.memberIsJoined(wallId, memberId)
+  //   if (!memberIsJoined)
+  //     throw ErrorHandler.build(statusCodes.BAD_REQUEST, WallMessages.NOT_A_MEMBER)
+    
+  //   const wall = await this._userService.get()
+
+  //   return wall
+  // }
 }
