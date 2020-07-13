@@ -16,4 +16,11 @@ export class WallRepository {
   create = async (payload: any): Promise<Wall> => this.repo.create(payload as Wall)
 
   save = async (wall: Wall) => await this.repo.save(wall)
+
+  memberIsJoined = async (wallId: number, memberId: number) =>
+    await this.repo.createQueryBuilder('wall')
+      .leftJoinAndSelect('wall.members', 'member')
+      .where('wall.id = :wallId', { wallId })
+      .andWhere('member.id = :memberId', { memberId })
+      .getOne()
 }

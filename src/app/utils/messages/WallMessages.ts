@@ -4,5 +4,6 @@ export const WallMessages = {
     ID: 'Por favor ingrese un ID válido.'
   },
   CREATOR_NOT_FOUND: '¡Vaya! No hemos encontrado usuarios con estos datos.',
-  WALL_NOT_FOUND: '¡Vaya! No hemos encontrado este muro.'
+  WALL_NOT_FOUND: '¡Vaya! No hemos encontrado este muro.',
+  JOINED: 'Ya se unió a este muro.',
 }

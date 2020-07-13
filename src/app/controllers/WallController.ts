@@ -32,4 +32,18 @@ export class WallController {
 
     return await this._wallService.unjoin(wall, memberId)
   }
+
+  async join(wallId: number, memberId: number) {
+    const member = await this._userService.getById(memberId)
+    const wall = await this._wallService.getByIdWithMembers(wallId)
+    const memberIsJoined = await this._wallService.memberIsJoined(wallId, memberId)
+
+    if (memberIsJoined)
+      throw ErrorHandler.build(statusCodes.BAD_REQUEST, WallMessages.JOINED)
+
+    if (!member || !wall)
+      throw ErrorHandler.build(statusCodes.BAD_REQUEST, WallMessages.WALL_NOT_FOUND)
+
+    return await this._wallService.join(wall, member)
+  }
 }

@@ -8,6 +8,7 @@ const walls = {
   domain: '/walls',
   create: '/create',
   unjoin: '/unjoin/:wallId',
+  join: '/join/:wallId',
 }
 
 const posts = {

@@ -3,6 +3,7 @@ import { WallMapper } from '../domain/mappers/WallMapper'
 import { WallRepository } from '../repositories/WallRepository'
 import { WallDTO } from '../domain/dtos/WallDTO'
 import { UserMapper } from '../domain/mappers/UserMapper'
+import { User } from '../../database/entities/User'
 
 export class WallService {
   constructor(
@@ -27,5 +28,14 @@ export class WallService {
     wall.members = wall.members.filter(member => member.id !== memberId)
     return await this._wallRepository.save(wall)
       .then(wall => this._wallMapper.mapToDTO(wall))
-  } 
+  }
+
+  join = async (wall: Wall, member: User): Promise<WallDTO> => {
+    wall.members = [...wall.members, member]
+    return await this._wallRepository.save(wall)
+      .then(wall => this._wallMapper.mapToDTO(wall))
+  }
+
+  memberIsJoined = async (wallId: number, memberId: number) =>
+    await this._wallRepository.memberIsJoined(wallId, memberId)
 }
