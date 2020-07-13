@@ -1,4 +1,4 @@
-import { Entity, Column, OneToMany, Index } from 'typeorm'
+import { Entity, Column, Index } from 'typeorm'
 import { BaseEntity } from '../BaseEntity'
 import { lowercase, encode, capitalize } from '../transformers'
 

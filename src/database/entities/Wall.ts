@@ -1,4 +1,4 @@
-import { Entity, Column, ManyToOne, JoinColumn, OneToMany } from 'typeorm'
+import { Entity, Column, ManyToOne, JoinColumn, OneToMany, ManyToMany, JoinTable } from 'typeorm'
 import { BaseEntity } from '../BaseEntity'
 import { capitalize } from '../transformers'
 
@@ -31,4 +31,8 @@ export class Wall extends BaseEntity {
     { onDelete: 'SET NULL' }
   )
   posts: Post[]
+
+  @ManyToMany(type => User)
+  @JoinTable({ name: 'walls_user_joins' })
+  members: User[]
 }

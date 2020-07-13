@@ -6,6 +6,7 @@ const users = {
 
 const walls = {
   domain: '/walls',
+  create: '/create',
 }
 
 const posts = {

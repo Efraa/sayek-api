@@ -2,11 +2,12 @@ import { Response, NextFunction, Request } from 'express'
 import { ResponseHandler, statusCodes } from '../http'
 import { JWToken } from '../helpers/JWToken'
 import { Logger } from '../helpers/logging/Logger'
+import { UserMessages } from '../app/utils/messages/UserMessages'
 
 export const ensureAuth = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const token = req.get('authorization')
-    const message = 'The request does not have the authorization headers.'
+    const message = UserMessages.AUTHORIZATION
     if (!token) {
       Logger.info(message)
       return res
@@ -14,9 +15,9 @@ export const ensureAuth = async (req: Request, res: Response, next: NextFunction
         .send(ResponseHandler.build(message))
     }
 
-    const isValidToken = await JWToken.verifyToken(token)
-    if (isValidToken) {
-      req.userLogged = isValidToken.user
+    const { user } = await JWToken.verifyToken(token)
+    if (user) {
+      req.userLogged = user
       next()
     }
   } catch (e) {

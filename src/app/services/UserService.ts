@@ -19,4 +19,7 @@ export class UserService {
   getBySocialNetwork = async (query: { networkType: string, networkId: number }) =>
     await this._userRepository.getBySocialNetwork(query)
       .then(user => user ? this._userMapper.mapToDTO(user) : undefined)
+
+  getById = async (id: number) =>
+    await this._userRepository.getById(id)
 }

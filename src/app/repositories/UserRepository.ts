@@ -8,6 +8,8 @@ export class UserRepository {
     this.repo = getRepository(User)
   }
 
+  getById = async (id: number) => await this.repo.findOne({ id })
+
   create = async (payload: UserPayload) => this.repo.create(payload)
 
   save = async (user: User) => await this.repo.save(user)

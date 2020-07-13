@@ -1,6 +1,6 @@
 import { MapProp } from 'ts-simple-automapper'
 
-export class UserDTO {
+export class WallDTO {
   @MapProp()
   id: number
 
@@ -8,11 +8,8 @@ export class UserDTO {
   name: string
 
   @MapProp()
-  email?: string
+  posts: []
 
   @MapProp()
-  networkType: string
-
-  @MapProp()
-  networkId: string
+  members: []
 }
