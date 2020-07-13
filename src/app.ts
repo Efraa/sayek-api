@@ -1,7 +1,7 @@
 import 'reflect-metadata'
 import dotenv from 'dotenv'
 import { DatabaseConnection } from './database/DatabaseConnection'
-import { cors, security } from './helpers/appSecurity'
+import { cors, security, sanitizeData, securityHeaders } from './helpers/appSecurity'
 import express, { Application } from 'express'
 import compression from 'compression'
 import { passport } from './middlewares/passport'
@@ -19,6 +19,8 @@ app.use(express.json())
 app.use(compression())
 app.use(morgan('dev'))
 app.use(security())
+app.use(securityHeaders())
+app.use(sanitizeData())
 app.use(cors())
 
 const initializeApplication = async () => {

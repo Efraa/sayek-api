@@ -40,6 +40,7 @@
     "express": "^4.17.1",
     "express-validator": "^6.4.0",
     "handlebars": "^4.7.3",
+    "helmet": "^3.23.3",
     "jsonwebtoken": "^8.5.1",
     "lusca": "^1.6.1",
     "morgan": "^1.9.1",
@@ -52,7 +53,8 @@
     "ts-simple-automapper": "^1.0.2",
     "typeorm": "^0.2.24",
     "winston": "^3.2.1",
-    "winston-slack-webhook-transport": "^1.2.1"
+    "winston-slack-webhook-transport": "^1.2.1",
+    "xss-clean": "^0.1.1"
   },
   "repository": {
     "type": "git",
