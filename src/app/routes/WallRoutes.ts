@@ -16,6 +16,7 @@ export class WallRoutes extends BaseRoutes {
 
   addRoutes() {
     this.api.post(Paths.walls.create, [ensureAuth, ...validators.create], this.create)
+    this.api.post(Paths.walls.unjoin, [ensureAuth, ...validators.unjoin], this.unjoin)
   }
 
   public create: RequestHandler = (req: Request, res: Response) =>
@@ -28,6 +29,17 @@ export class WallRoutes extends BaseRoutes {
         if (wall)
           return res
             .status(statusCodes.CREATE)
+            .send(ResponseHandler.build(wall, false))
+      }, req, res
+    })
+
+  public unjoin: RequestHandler = (req: Request, res: Response) =>
+    RouteMethod.build({
+      resolve: async () => {
+        const wall = await this._wallController.unjoin(parseInt(req.params.wallId), req.userLogged?.id)
+        if (wall)
+          return res
+            .status(statusCodes.OK)
             .send(ResponseHandler.build(wall, false))
       }, req, res
     })

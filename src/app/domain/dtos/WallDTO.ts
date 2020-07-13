@@ -8,8 +8,8 @@ export class WallDTO {
   name: string
 
   @MapProp()
-  posts: []
+  posts: any[]
 
   @MapProp()
-  members: []
+  members: any[]
 }

@@ -24,4 +24,12 @@ export class WallController {
 
     return wall
   }
+
+  async unjoin(wallId: number, memberId: number) {
+    const wall = await this._wallService.getByIdWithMembers(wallId)
+    if (!wall)
+      throw ErrorHandler.build(statusCodes.BAD_REQUEST, WallMessages.WALL_NOT_FOUND)
+
+    return await this._wallService.unjoin(wall, memberId)
+  }
 }
