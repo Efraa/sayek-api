@@ -25,7 +25,7 @@ export class Comment extends BaseEntity {
   @Column()
   postId: number
 
-  @ManyToOne(type => Post, {
+  @ManyToOne(type => Post, post => post.comments, {
     cascade: ['update', 'insert']
   })
   @JoinColumn()

@@ -1,7 +1,10 @@
+import { config } from '../../config'
 import { Comment } from 'src/database/entities/Comment'
 import { CommentMapper } from '../domain/mappers/CommentMapper'
 import { CommentRepository } from '../repositories/CommentRepository'
 import { CommentDTO } from '../domain/dtos/CommentDTO'
+import { CommentMessages } from '../utils/messages/CommentMessages'
+import { ErrorHandler, statusCodes } from '../../http'
 
 export class CommentService {
   constructor(
@@ -18,4 +21,23 @@ export class CommentService {
 
   getById = async (id: number) =>
     await this._commentRepository.getById(id)
+
+  commentOnPost = async (query: {
+    postId: number,
+    page?: number,
+    perPage?: number,
+  }) => {
+    const { page, perPage, postId } = query
+    const list = await this._commentRepository.commentOnPost({
+      page: page || config.PAGINATION.PAGE,
+      perPage: perPage || config.PAGINATION.PER_PAGE,
+      postId,
+    })
+
+    return {
+      comments: this._commentMapper.mapListToDTO(list.rows),
+      all: list.all,
+      pages: list.pages,
+    }
+  }
 }

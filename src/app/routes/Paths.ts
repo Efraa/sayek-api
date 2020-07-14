@@ -18,6 +18,7 @@ const posts = {
   create: '/create',
   list: '/list',
   delete: '/delete/:postId',
+  get: '/get/:postId',
 }
 
 const comments = {

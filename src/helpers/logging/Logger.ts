@@ -13,7 +13,7 @@ const format = wFormat.combine(
 const defaultLogger = createLogger({
   format,
   transports: [
-    SlackHook,
+    // SlackHook,
     new transports.Console(),
     new transports.File({
       maxsize: 5000000,

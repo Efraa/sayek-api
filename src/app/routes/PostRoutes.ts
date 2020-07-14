@@ -18,6 +18,7 @@ export class PostRoutes extends BaseRoutes {
     this.api.post(Paths.posts.create, [ensureAuth, ...validators.create], this.create)
     this.api.get(Paths.posts.list, ensureAuth, this.list)
     this.api.delete(Paths.posts.delete, [ensureAuth, ...validators.deleted], this.delete)
+    this.api.get(Paths.posts.get, ensureAuth, this.get)
   }
 
   public create: RequestHandler = (req: Request, res: Response) =>
@@ -62,6 +63,17 @@ export class PostRoutes extends BaseRoutes {
           return res
             .status(statusCodes.OK)
             .send(ResponseHandler.build(deleted, false))
+      }, req, res
+    })
+
+  public get: RequestHandler = (req: Request, res: Response) =>
+    RouteMethod.build({
+      resolve: async () => {
+        const post = await this._postController.get(parseInt(req.params.postId))
+        if (post)
+          return res
+            .status(statusCodes.OK)
+            .send(ResponseHandler.build(post, false))
       }, req, res
     })
 }

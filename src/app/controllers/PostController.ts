@@ -21,6 +21,8 @@ export class PostController {
     userId: number,
   }) => await this._postService.list(query)
 
+  get = async (postId: number) => await this._postService.get(postId)
+
   delete = async (postId: number, userId: number) =>
     await this._postService.delete(postId, userId)
 }

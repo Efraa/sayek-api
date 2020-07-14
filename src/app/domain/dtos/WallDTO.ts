@@ -9,4 +9,7 @@ export class WallDTO {
 
   @MapProp()
   posts: any[]
+
+  @MapProp()
+  members?: string
 }

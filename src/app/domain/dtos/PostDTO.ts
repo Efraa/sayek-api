@@ -15,4 +15,10 @@ export class PostDTO {
 
   @MapProp()
   color: string
+
+  @MapProp()
+  comments: any
+
+  @MapProp()
+  commentsCount?: string
 }

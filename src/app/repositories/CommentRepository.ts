@@ -13,4 +13,23 @@ export class CommentRepository {
   create = async (payload: any) => this.repo.create(payload as Comment)
 
   save = async (comment: Comment) => await this.repo.save(comment)
+
+  commentOnPost = async (query: {
+    page: number,
+    perPage: number,
+    postId: number,
+  }) => {
+    const { perPage, page, postId } = query
+    const [rows, count] = await this.repo.createQueryBuilder('comment')
+      .where('comment.postId = :postId', { postId })
+      .skip(((perPage * page) - perPage))
+      .take(perPage)
+      .getManyAndCount()
+
+    return {
+      rows,
+      all: count,
+      pages: Math.ceil(count / perPage),
+    }
+  }
 }

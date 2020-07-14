@@ -54,6 +54,11 @@ export class PostRepository {
     }
   }
 
+  get = async (id: number) => await this.repo.createQueryBuilder('post')
+    .loadRelationCountAndMap('post.commentsCount', 'post.comments')
+    .where('post.id = :id', { id })
+    .getOne()
+
   delete = async (postId: number, userId: number) =>
     await this.repo.createQueryBuilder()
       .softDelete()

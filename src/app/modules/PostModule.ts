@@ -2,6 +2,7 @@ import { PostRepository } from '../repositories/PostRepository'
 import { PostMapper } from '../domain/mappers/PostMapper'
 import { PostService } from '../services/PostService'
 import { PostController } from '../controllers/PostController'
+import { commentModule } from './CommentModule'
 import { socket } from '../../server'
 
 export class PostModule {
@@ -27,6 +28,7 @@ export class PostModule {
       (this._service = new PostService(
         this.repository,
         this.mapper,
+        commentModule.service,
       )) : this._service
   }
 

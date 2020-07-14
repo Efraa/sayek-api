@@ -5,11 +5,13 @@ import { PostRepository } from '../repositories/PostRepository'
 import { PostDTO } from '../domain/dtos/PostDTO'
 import { ErrorHandler, statusCodes } from '../../http'
 import { PostMessages } from '../utils/messages/PostMessages'
+import { CommentService } from './CommentService'
 
 export class PostService {
   constructor(
     private _postRepository: PostRepository,
     private _postMapper: PostMapper,
+    private _commentsService: CommentService,
   ) {}
 
   mapToEntity = async (postPayload: any): Promise<Post> =>
@@ -63,6 +65,20 @@ export class PostService {
       posts: this._postMapper.mapListToDTO(list.rows),
       all: list.all,
       pages: list.pages,
+    }
+  }
+
+  get = async (postId: number) => {
+    const comments = await this._commentsService.commentOnPost({ postId })
+    const post = await this._postRepository.get(postId)
+      .then(post => this._postMapper.mapToDTO(post as Post))
+
+    if (!post)
+      throw ErrorHandler.build(statusCodes.NOT_FOUND, PostMessages.POST_NOT_FOUND)
+    
+    return {
+      ...post,
+      ...comments,
     }
   }
 
