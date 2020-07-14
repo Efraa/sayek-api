@@ -13,11 +13,6 @@ export class Comment extends BaseEntity {
   })
   content: string
 
-  @Column({
-    default: false
-  })
-  deleted: boolean
-
   @Column()
   userId: number
 

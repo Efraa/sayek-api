@@ -1,4 +1,4 @@
-import { check } from 'express-validator'
+import { check, param } from 'express-validator'
 import { PostMessages } from '../messages/PostMessages'
 
 const { VALIDATOR } = PostMessages
@@ -18,4 +18,11 @@ const create = [
     })
 ]
 
-export const validators = { create }
+const deleted = [
+  check('postId', VALIDATOR.POST_ID)
+    .isLength({
+      min: 1
+    })
+]
+
+export const validators = { create, deleted }

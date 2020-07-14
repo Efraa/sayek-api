@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, VersionColumn } from 'typeorm'
+import { Entity, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, VersionColumn, DeleteDateColumn } from 'typeorm'
 
 @Entity()
 export class BaseEntity {
@@ -14,6 +14,11 @@ export class BaseEntity {
     name: 'updated_at'
   })
   updatedAt: Date
+
+  @DeleteDateColumn({
+    name: 'deleted_at'
+  })
+  deletedAt: Date
 
   @VersionColumn()
   version: number

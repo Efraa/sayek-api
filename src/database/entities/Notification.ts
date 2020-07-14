@@ -39,11 +39,6 @@ export class Notification extends BaseEntity {
   @Column({ transformer: [lowercase, encode] })
   action: string
 
-  @Column({
-    default: false
-  })
-  deleted: boolean
-
   @Column()
   userId: number
 

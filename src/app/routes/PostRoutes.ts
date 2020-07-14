@@ -17,6 +17,7 @@ export class PostRoutes extends BaseRoutes {
   addRoutes() {
     this.api.post(Paths.posts.create, [ensureAuth, ...validators.create], this.create)
     this.api.get(Paths.posts.list, ensureAuth, this.list)
+    this.api.delete(Paths.posts.delete, [ensureAuth, ...validators.deleted], this.delete)
   }
 
   public create: RequestHandler = (req: Request, res: Response) =>
@@ -49,6 +50,18 @@ export class PostRoutes extends BaseRoutes {
           return res
             .status(statusCodes.OK)
             .send(ResponseHandler.build(list, false))
+      }, req, res
+    })
+
+  public delete: RequestHandler = (req: Request, res: Response) =>
+    RouteMethod.build({
+      resolve: async () => {
+        const { postId } = req.params
+        const deleted = await this._postController.delete(parseInt(postId), req.userLogged?.id)
+        if (deleted)
+          return res
+            .status(statusCodes.OK)
+            .send(ResponseHandler.build(deleted, false))
       }, req, res
     })
 }

@@ -64,4 +64,8 @@ export class PostService {
       pages: list.pages,
     }
   }
+
+  delete = async (postId: number, userId: number) =>
+    await this._postRepository.delete(postId, userId)
+      .then(() => ({ postId, userId }))
 }

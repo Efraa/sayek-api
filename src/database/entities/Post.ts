@@ -19,11 +19,6 @@ export class Post extends BaseEntity {
   })
   color: string
 
-  @Column({
-    default: false
-  })
-  deleted: boolean
-
   @Column()
   wallId: number
 

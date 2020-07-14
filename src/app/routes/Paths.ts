@@ -17,6 +17,7 @@ const posts = {
   domain: '/posts',
   create: '/create',
   list: '/list',
+  delete: '/delete/:postId',
 }
 
 const comments = {

@@ -8,7 +8,7 @@ export class PostRepository {
     this.repo = getRepository(Post)
   }
 
-  getById = async (id: number) => await this.repo.findOne({ id, deleted: false })
+  getById = async (id: number) => await this.repo.findOne({ id })
 
   create = async (payload: any) => this.repo.create(payload as Post)
 
@@ -22,7 +22,6 @@ export class PostRepository {
     const { perPage, page, wallId } = query
     const [rows, count] = await this.repo.createQueryBuilder('post')
       .where('post.wallId = :wallId', { wallId })
-      .andWhere('deleted = false')
       .skip(((perPage * page) - perPage))
       .take(perPage)
       .orderBy('post.id', 'DESC')
@@ -43,7 +42,6 @@ export class PostRepository {
     const { perPage, page, userId } = query
     const [rows, count] = await this.repo.createQueryBuilder('post')
       .where('post.userId = :userId', { userId })
-      .andWhere('deleted = false')
       .skip(((perPage * page) - perPage))
       .take(perPage)
       .orderBy('post.id', 'DESC')
@@ -55,4 +53,12 @@ export class PostRepository {
       pages: Math.ceil(count / perPage),
     }
   }
+
+  delete = async (postId: number, userId: number) =>
+    await this.repo.createQueryBuilder()
+      .softDelete()
+      .from(Post)
+      .where('id = :postId', { postId })
+      .andWhere('userId = :userId', { userId })
+      .execute()
 }

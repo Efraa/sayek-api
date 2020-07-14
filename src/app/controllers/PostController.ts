@@ -1,4 +1,3 @@
-import { ErrorHandler, statusCodes } from '../../http'
 import { PostService } from '../services/PostService'
 import { SocketServer } from '../../socket/SocketServer'
 
@@ -21,4 +20,7 @@ export class PostController {
     perPage?: number,
     userId: number,
   }) => await this._postService.list(query)
+
+  delete = async (postId: number, userId: number) =>
+    await this._postService.delete(postId, userId)
 }
