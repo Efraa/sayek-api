@@ -1,5 +1,5 @@
 import 'reflect-metadata'
-import dotenv from 'dotenv'
+import { config } from './config'
 import { DatabaseConnection } from './database/DatabaseConnection'
 import { cors, security, sanitizeData, securityHeaders } from './helpers/appSecurity'
 import express, { Application } from 'express'
@@ -7,13 +7,12 @@ import compression from 'compression'
 import { passport } from './middlewares/passport'
 import { Routes } from './http'
 import morgan from 'morgan'
-dotenv.config()
 
 const app: Application = express()
 
 // Middlewares
 app.use(express.urlencoded({ extended: false }))
-app.set('port', process.env.PORT)
+app.set('port', config.SERVER.PORT)
 app.use(passport.initialize())
 app.use(express.json())
 app.use(compression())
@@ -30,7 +29,7 @@ const initializeApplication = async () => {
         console.info(`Connected to ${database} database`))
     
     Routes.build()
-    app.use(process.env.PREFIX_ROUTES as string, Routes.router)
+    app.use(config.SERVER.PREFIX_ROUTES, Routes.router)
   } catch (e) {
     console.error(e)
   }

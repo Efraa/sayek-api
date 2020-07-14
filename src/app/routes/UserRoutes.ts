@@ -1,11 +1,10 @@
-import dotenv from 'dotenv'
+import { config } from '../../config'
 import { BaseRoutes } from '../../http/BaseRoutes'
-import { ResponseHandler, RouteMethod, statusCodes } from '../../http'
+import { RouteMethod } from '../../http'
 import { Response, RequestHandler, Request } from 'express'
 import { UserController } from '../controllers/UserController'
 import { facebookMiddle, googleMiddle } from '../../middlewares/passport'
 import { Paths } from './Paths'
-dotenv.config()
 
 export class UserRoutes extends BaseRoutes {
 
@@ -28,7 +27,7 @@ export class UserRoutes extends BaseRoutes {
           await this._userController.authOrCreate(req.user)
             .then(token => {
               res.setHeader('authorization', token)
-              res.redirect(`${process.env.AGENT_CLIENT}/?t=${token}`)
+              res.redirect(`${config.AGENT_CLIENT}/?t=${token}`)
             })
         }
       }, req, res
