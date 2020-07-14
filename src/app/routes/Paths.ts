@@ -15,6 +15,7 @@ const walls = {
 const posts = {
   domain: '/posts',
   create: '/create',
+  list: '/list',
 }
 
 const comments = {

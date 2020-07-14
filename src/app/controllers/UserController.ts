@@ -21,7 +21,6 @@ export class UserController {
       networkId: userMapped.networkId,
       networkType: userMapped.networkType
     })
-    console.log('User from EFRA:', user)
 
     if (!user) {
       // create user

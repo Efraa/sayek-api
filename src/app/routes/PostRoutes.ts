@@ -16,6 +16,7 @@ export class PostRoutes extends BaseRoutes {
 
   addRoutes() {
     this.api.post(Paths.posts.create, [ensureAuth, ...validators.create], this.create)
+    this.api.get(Paths.posts.list, ensureAuth, this.list)
   }
 
   public create: RequestHandler = (req: Request, res: Response) =>
@@ -32,6 +33,22 @@ export class PostRoutes extends BaseRoutes {
           return res
             .status(statusCodes.CREATE)
             .send(ResponseHandler.build(post, false))
+      }, req, res
+    })
+
+  public list: RequestHandler = (req: Request, res: Response) =>
+    RouteMethod.build({
+      resolve: async () => {
+        const { page, perPage } = req.query
+        const list = await this._postController.list({
+          userId: req.userLogged?.id,
+          page: page as any,
+          perPage: perPage as any,
+        })
+        if (list)
+          return res
+            .status(statusCodes.OK)
+            .send(ResponseHandler.build(list, false))
       }, req, res
     })
 }

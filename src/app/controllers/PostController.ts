@@ -15,4 +15,10 @@ export class PostController {
     color: string,
   }) => await this._postService.mapToEntity(wallPayload)
     .then(async post => await this._postService.create(post))
+
+  list = async (query: {
+    page?: number,
+    perPage?: number,
+    userId: number,
+  }) => await this._postService.list(query)
 }

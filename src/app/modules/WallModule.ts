@@ -3,6 +3,7 @@ import { WallMapper } from '../domain/mappers/WallMapper'
 import { WallService } from '../services/WallService'
 import { WallController } from '../controllers/WallController'
 import { userModule } from './UserModule'
+import { postModule } from './PostModule'
 import { socket } from '../../server'
 
 export class WallModule {
@@ -28,6 +29,7 @@ export class WallModule {
       (this._service = new WallService(
         this.repository,
         this.mapper,
+        postModule.repository,
       )) : this._service
   }
 

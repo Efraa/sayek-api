@@ -4,11 +4,13 @@ import { WallRepository } from '../repositories/WallRepository'
 import { WallDTO } from '../domain/dtos/WallDTO'
 import { ErrorHandler, statusCodes } from '../../http'
 import { WallMessages } from '../utils/messages/WallMessages'
+import { PostRepository } from '../repositories/PostRepository'
 
 export class WallService {
   constructor(
     private _wallRepository: WallRepository,
     private _wallMapper: WallMapper,
+    private _postRepository: PostRepository,
   ) {}
 
   getById = async (id: number) =>
@@ -53,5 +55,9 @@ export class WallService {
       all: list.all,
       pages: list.pages,
     }
+  }
+
+  get = async (wallId: number, memberId: number) => {
+    
   }
 }
