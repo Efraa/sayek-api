@@ -13,11 +13,6 @@ export class Wall extends BaseEntity {
   })
   name: string
 
-  @Column({
-    default: false
-  })
-  deleted: boolean
-
   @Column()
   creatorId: number
 

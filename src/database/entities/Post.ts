@@ -15,6 +15,11 @@ export class Post extends BaseEntity {
   content: string
 
   @Column({
+    transformer: [lowercase]
+  })
+  color: string
+
+  @Column({
     default: false
   })
   deleted: boolean

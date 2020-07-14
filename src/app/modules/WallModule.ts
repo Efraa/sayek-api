@@ -19,7 +19,7 @@ export class WallModule {
 
   get mapper(): WallMapper {
     return !this._mapper ?
-      (this._mapper = new WallMapper(this.repository, userModule.mapper))
+      (this._mapper = new WallMapper(this.repository))
       : this._mapper
   }
 

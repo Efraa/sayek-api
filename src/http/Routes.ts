@@ -4,11 +4,13 @@ import { BaseRoutes } from './BaseRoutes'
 // Modules
 import { userModule } from '../app/modules/UserModule'
 import { wallModule } from '../app/modules/WallModule'
+import { postModule } from '../app/modules/PostModule'
 
 // Routes
 import { Paths } from '../app/routes/Paths'
 import { UserRoutes } from '../app/routes/UserRoutes'
 import { WallRoutes } from '../app/routes/WallRoutes'
+import { PostRoutes } from '../app/routes/PostRoutes'
 
 export class Routes {
   static router: Router = Router()
@@ -19,5 +21,6 @@ export class Routes {
   static build = () => {
     Routes.add(new UserRoutes(Paths.users.domain, userModule.controller))
     Routes.add(new WallRoutes(Paths.walls.domain, wallModule.controller))
+    Routes.add(new PostRoutes(Paths.posts.domain, postModule.controller))
   }
 }
