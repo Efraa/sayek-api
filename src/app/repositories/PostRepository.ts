@@ -8,7 +8,7 @@ export class PostRepository {
     this.repo = getRepository(Post)
   }
 
-  getById = async (id: number) => await this.repo.findOne({ id })
+  getById = async (id: number) => await this.repo.findOne({ id, deleted: false })
 
   create = async (payload: any) => this.repo.create(payload as Post)
 
@@ -22,6 +22,7 @@ export class PostRepository {
     const { perPage, page, wallId } = query
     const [rows, count] = await this.repo.createQueryBuilder('post')
       .where('post.wallId = :wallId', { wallId })
+      .andWhere('deleted = false')
       .skip(((perPage * page) - perPage))
       .take(perPage)
       .orderBy('post.id', 'DESC')
@@ -42,6 +43,7 @@ export class PostRepository {
     const { perPage, page, userId } = query
     const [rows, count] = await this.repo.createQueryBuilder('post')
       .where('post.userId = :userId', { userId })
+      .andWhere('deleted = false')
       .skip(((perPage * page) - perPage))
       .take(perPage)
       .orderBy('post.id', 'DESC')
