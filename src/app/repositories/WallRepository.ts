@@ -62,6 +62,8 @@ export class WallRepository {
     }
   }
 
-  get = async (id: number) =>
-    await this.repo.findOne({ where: { id }, relations: ['members', 'posts'] })
+  get = async (id: number) => await this.repo.createQueryBuilder('wall')
+    .loadRelationCountAndMap('wall.members', 'wall.members')
+    .where('wall.id = :id', { id })
+    .getOne()
 }

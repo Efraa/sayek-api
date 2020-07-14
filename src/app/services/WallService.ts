@@ -4,13 +4,13 @@ import { WallRepository } from '../repositories/WallRepository'
 import { WallDTO } from '../domain/dtos/WallDTO'
 import { ErrorHandler, statusCodes } from '../../http'
 import { WallMessages } from '../utils/messages/WallMessages'
-import { PostRepository } from '../repositories/PostRepository'
+import { PostService } from './PostService'
 
 export class WallService {
   constructor(
     private _wallRepository: WallRepository,
     private _wallMapper: WallMapper,
-    private _postRepository: PostRepository,
+    private _postService: PostService,
   ) {}
 
   getById = async (id: number) =>
@@ -57,7 +57,12 @@ export class WallService {
     }
   }
 
-  get = async (wallId: number, memberId: number) => {
-    
+  get = async (wallId: number) => {
+    const posts = await this._postService.postOnWall({ wallId })
+    const wall = await this._wallRepository.get(wallId)
+    return {
+      ...wall,
+      ...posts,
+    }
   }
 }

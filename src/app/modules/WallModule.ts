@@ -29,7 +29,7 @@ export class WallModule {
       (this._service = new WallService(
         this.repository,
         this.mapper,
-        postModule.repository,
+        postModule.service,
       )) : this._service
   }
 

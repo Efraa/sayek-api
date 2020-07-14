@@ -22,7 +22,7 @@ export class Wall extends BaseEntity {
   @JoinColumn()
   creator: User
 
-  @OneToMany(type => Post, p => p.wallId,
+  @OneToMany(type => Post, post => post.wall,
     { onDelete: 'SET NULL' }
   )
   posts: Post[]

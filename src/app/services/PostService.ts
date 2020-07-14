@@ -37,7 +37,7 @@ export class PostService {
       throw ErrorHandler.build(statusCodes.NOT_FOUND, PostMessages.POST_NOT_FOUND)
 
     return {
-      walls: this._postMapper.mapListToDTO(list.rows),
+      posts: this._postMapper.mapListToDTO(list.rows),
       all: list.all,
       pages: list.pages,
     }

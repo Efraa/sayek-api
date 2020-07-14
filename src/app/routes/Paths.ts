@@ -10,6 +10,7 @@ const walls = {
   unjoin: '/unjoin/:wallId',
   join: '/join/:wallId',
   list: '/list',
+  get: '/get/:wallId',
 }
 
 const posts = {

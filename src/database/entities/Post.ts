@@ -27,7 +27,7 @@ export class Post extends BaseEntity {
   @Column()
   wallId: number
 
-  @ManyToOne(type => Wall, {
+  @ManyToOne(type => Wall, wall => wall.posts, {
     cascade: ['update', 'insert']
   })
   @JoinColumn()
@@ -42,7 +42,7 @@ export class Post extends BaseEntity {
   @JoinColumn()
   user: User
 
-  @OneToMany(type => Comment, c => c.postId,
+  @OneToMany(type => Comment, comment => comment.post,
     { onDelete: 'SET NULL' }
   )
   comments: Comment[]
