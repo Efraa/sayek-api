@@ -19,6 +19,7 @@ const posts = {
   list: '/list',
   delete: '/delete/:postId',
   get: '/get/:postId',
+  relatedPosts: '/related-posts',
 }
 
 const comments = {

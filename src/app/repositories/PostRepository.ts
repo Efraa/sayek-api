@@ -66,4 +66,31 @@ export class PostRepository {
       .where('id = :postId', { postId })
       .andWhere('userId = :userId', { userId })
       .execute()
+
+  relatedPosts = async (query: {
+    page: number,
+    perPage: number,
+    userId: number,
+  }) => {
+    const { perPage, page, userId } = query
+    const [rows, count] = await this.repo.createQueryBuilder('post')
+      .leftJoinAndSelect('post.wall', 'wall')
+      .leftJoinAndSelect('wall.members', 'member')
+      .where('member.id = :userId', { userId })
+      .andWhere('post.userId != :userId', { userId })
+      .select('post.id')
+      .addSelect('post.content')
+      .addSelect('post.color')
+      .addSelect('post.createAt')
+      .skip(((perPage * page) - perPage))
+      .take(perPage)
+      .orderBy('post.id', 'DESC')
+      .getManyAndCount()
+
+    return {
+      rows,
+      all: count,
+      pages: Math.ceil(count / perPage),
+    }
+  }
 }

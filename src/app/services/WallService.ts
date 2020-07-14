@@ -61,6 +61,9 @@ export class WallService {
     const posts = await this._postService.postOnWall({ wallId })
     const wall = await this._wallRepository.get(wallId)
       .then(wall => this._wallMapper.mapToDTO(wall as Wall))
+
+    if (!wall)
+      throw ErrorHandler.build(statusCodes.NOT_FOUND, WallMessages.WALL_NOT_FOUND)
   
     return {
       ...wall,

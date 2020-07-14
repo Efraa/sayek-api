@@ -82,6 +82,28 @@ export class PostService {
     }
   }
 
+  relatedPosts = async (query: {
+    userId: number,
+    page?: number,
+    perPage?: number,
+  }) => {
+    const { page, perPage, userId } = query
+    const list = await this._postRepository.relatedPosts({
+      page: page || config.PAGINATION.PAGE,
+      perPage: perPage || config.PAGINATION.PER_PAGE,
+      userId,
+    })
+
+    if (!list.rows[0])
+      throw ErrorHandler.build(statusCodes.NOT_FOUND, PostMessages.POST_NOT_FOUND)
+
+    return {
+      posts: this._postMapper.mapListToDTO(list.rows),
+      all: list.all,
+      pages: list.pages,
+    }
+  }
+
   delete = async (postId: number, userId: number) =>
     await this._postRepository.delete(postId, userId)
       .then(() => ({ postId, userId }))

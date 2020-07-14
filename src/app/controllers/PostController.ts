@@ -21,6 +21,12 @@ export class PostController {
     userId: number,
   }) => await this._postService.list(query)
 
+  relatedPosts = async (query: {
+    page?: number,
+    perPage?: number,
+    userId: number,
+  }) => await this._postService.relatedPosts(query)
+
   get = async (postId: number) => await this._postService.get(postId)
 
   delete = async (postId: number, userId: number) =>
