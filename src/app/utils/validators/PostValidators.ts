@@ -12,7 +12,7 @@ const create = [
     .isLength({
       min: 1
     }),
-  check('wallId', VALIDATOR.WALL_ID)
+  param('wallId', VALIDATOR.WALL_ID)
     .isLength({
       min: 1
     })

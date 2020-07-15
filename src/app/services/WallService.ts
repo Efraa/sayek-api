@@ -1,3 +1,4 @@
+import { config } from '../../config'
 import { Wall } from '../../database/entities/Wall'
 import { WallMapper } from '../domain/mappers/WallMapper'
 import { WallRepository } from '../repositories/WallRepository'
@@ -42,8 +43,8 @@ export class WallService {
   }) => {
     const { page, perPage, userId } = query
     const list = await this._wallRepository.list({
-      page: page || 1,
-      perPage: perPage || 12,
+      page: page || config.PAGINATION.PAGE,
+      perPage: perPage || config.PAGINATION.PER_PAGE,
       userId
     })
 

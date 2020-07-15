@@ -8,21 +8,10 @@ const create = [
     .isLength({
       min: 2
     }),
-  check('color', VALIDATOR.COLOR)
-    .isLength({
-      min: 1
-    }),
-  check('wallId', VALIDATOR.WALL_ID)
+  param('postId', VALIDATOR.POST_ID)
     .isLength({
       min: 1
     })
 ]
 
-const deleted = [
-  check('commentId', VALIDATOR.POST_ID)
-    .isLength({
-      min: 1
-    })
-]
-
-export const validators = { create, deleted }
+export const validators = { create }

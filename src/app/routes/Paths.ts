@@ -6,24 +6,25 @@ const users = {
 
 const walls = {
   domain: '/walls',
-  create: '/create',
+  create: '/',
   unjoin: '/unjoin/:wallId',
   join: '/join/:wallId',
   list: '/list',
-  get: '/get/:wallId',
+  get: '/:wallId',
 }
 
 const posts = {
   domain: '/posts',
-  create: '/create',
+  create: '/:wallId',
   list: '/list',
-  delete: '/delete/:postId',
-  get: '/get/:postId',
+  delete: '/:postId',
+  get: '/:postId',
   relatedPosts: '/related-posts',
 }
 
 const comments = {
   domain: '/comments',
+  create: '/:postId',
 }
 
 const notifications = {

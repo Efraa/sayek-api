@@ -25,12 +25,12 @@ export class PostRoutes extends BaseRoutes {
   public create: RequestHandler = (req: Request, res: Response) =>
     RouteMethod.build({
       resolve: async () => {
-        const { content, color, wallId } = req.body
+        const { content, color } = req.body
         const post = await this._postController.create({
           userId: req.userLogged?.id,
           content,
           color,
-          wallId,
+          wallId: parseInt(req.params.wallId),
         })
         if (post)
           return res

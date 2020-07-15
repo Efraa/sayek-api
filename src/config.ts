@@ -12,7 +12,10 @@ export const config = {
   },
   PAGINATION: {
     PAGE: parseInt(process.env.PAGINATION_PAGE as string),
-    PER_PAGE: parseInt(process.env.PAGINATION_PER_PAGE as string)
+    PER_PAGE: parseInt(process.env.PAGINATION_PER_PAGE as string),
+    POST_PER_PAGE: parseInt(process.env.POST_PER_PAGE as string),
+    COMMENTS_PER_PAGE: parseInt(process.env.COMMENTS_PER_PAGE as string),
+    COMMENTS_POSTS_PER_PAGE: parseInt(process.env.COMMENTS_POSTS_PER_PAGE as string),
   },
   AGENT_CLIENT: process.env.AGENT_CLIENT,
 }

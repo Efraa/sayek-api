@@ -54,7 +54,7 @@ export class PostService {
     const { page, perPage, userId } = query
     const list = await this._postRepository.list({
       page: page || config.PAGINATION.PAGE,
-      perPage: perPage || config.PAGINATION.PER_PAGE,
+      perPage: perPage || config.PAGINATION.POST_PER_PAGE,
       userId,
     })
 

@@ -3,6 +3,7 @@ import { SocketServer } from '../../socket/SocketServer'
 import { UserService } from '../services/UserService'
 import { ErrorHandler, statusCodes } from '../../http'
 import { WallMessages } from '../utils/messages/WallMessages'
+import { WallDTO } from '../domain/dtos/WallDTO'
 
 export class WallController {
   constructor(
@@ -22,7 +23,7 @@ export class WallController {
     const wall = await this._wallService.mapToEntity({ ...wallPayload, creator })
       .then(async wall => await this._wallService.create({ ...wall, members: [creator] }))
 
-    return wall
+    return { ...wall, members: undefined } as WallDTO
   }
 
   async unjoin(wallId: number, memberId: number) {

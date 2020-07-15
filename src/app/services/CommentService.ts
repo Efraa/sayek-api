@@ -30,7 +30,7 @@ export class CommentService {
     const { page, perPage, postId } = query
     const list = await this._commentRepository.commentOnPost({
       page: page || config.PAGINATION.PAGE,
-      perPage: perPage || config.PAGINATION.PER_PAGE,
+      perPage: perPage || config.PAGINATION.COMMENTS_POSTS_PER_PAGE,
       postId,
     })
 

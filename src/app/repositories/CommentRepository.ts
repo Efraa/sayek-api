@@ -24,6 +24,7 @@ export class CommentRepository {
       .where('comment.postId = :postId', { postId })
       .skip(((perPage * page) - perPage))
       .take(perPage)
+      .orderBy('comment.id', 'DESC')
       .getManyAndCount()
 
     return {

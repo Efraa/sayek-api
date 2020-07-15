@@ -1,5 +1,6 @@
 import { PostService } from '../services/PostService'
 import { SocketServer } from '../../socket/SocketServer'
+import sanitizeHtml from 'sanitize-html'
 
 export class PostController {
   constructor(
@@ -12,8 +13,15 @@ export class PostController {
     userId: number,
     wallId: number,
     color: string,
-  }) => await this._postService.mapToEntity(wallPayload)
-    .then(async post => await this._postService.create(post))
+  }) => await this._postService.mapToEntity({
+    ...wallPayload,
+    content: sanitizeHtml(wallPayload.content, {
+      allowedTags: [ 'a' ],
+      allowedAttributes: {
+        'a': [ 'href' ]
+      }
+    })
+  }).then(async post => await this._postService.create(post))
 
   list = async (query: {
     page?: number,

@@ -50,6 +50,8 @@ export class WallRepository {
     const [rows, count] = await this.repo.createQueryBuilder('wall')
       .leftJoinAndSelect('wall.members', 'member')
       .where('member.id = :userId', { userId })
+      .select('wall.id')
+      .addSelect('wall.name')
       .skip(((perPage * page) - perPage))
       .take(perPage)
       .orderBy('wall.id', 'DESC')
