@@ -3,7 +3,6 @@ import { PostMapper } from '../domain/mappers/PostMapper'
 import { PostService } from '../services/PostService'
 import { PostController } from '../controllers/PostController'
 import { commentModule } from './CommentModule'
-import { socket } from '../../server'
 
 export class PostModule {
   private _repository: PostRepository
@@ -34,7 +33,7 @@ export class PostModule {
 
   get controller(): PostController {
     return !this._controller ?
-      (this._controller = new PostController(this.service, socket))
+      (this._controller = new PostController(this.service))
       : this._controller
   }
 }

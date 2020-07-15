@@ -1,12 +1,8 @@
 import { UserService } from '../services/UserService'
-import { SocketServer } from '../../socket/SocketServer'
 import { JWToken } from '../../helpers'
 
 export class UserController {
-  constructor(
-    private _userService: UserService,
-    private _socket: SocketServer,
-  ) {}
+  constructor(private _userService: UserService) {}
 
   async authOrCreate(userPayload: any) {
     const userMapped = {

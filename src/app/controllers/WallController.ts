@@ -1,5 +1,4 @@
 import { WallService } from '../services/WallService'
-import { SocketServer } from '../../socket/SocketServer'
 import { UserService } from '../services/UserService'
 import { ErrorHandler, statusCodes } from '../../http'
 import { WallMessages } from '../utils/messages/WallMessages'
@@ -9,7 +8,6 @@ export class WallController {
   constructor(
     private _wallService: WallService,
     private _userService: UserService,
-    private _socket: SocketServer,
   ) {}
 
   async create(wallPayload: {

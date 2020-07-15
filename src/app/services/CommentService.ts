@@ -3,8 +3,6 @@ import { Comment } from 'src/database/entities/Comment'
 import { CommentMapper } from '../domain/mappers/CommentMapper'
 import { CommentRepository } from '../repositories/CommentRepository'
 import { CommentDTO } from '../domain/dtos/CommentDTO'
-import { CommentMessages } from '../utils/messages/CommentMessages'
-import { ErrorHandler, statusCodes } from '../../http'
 
 export class CommentService {
   constructor(

@@ -2,7 +2,6 @@ import { UserRepository } from '../repositories/UserRepository'
 import { UserMapper } from '../domain/mappers/UserMapper'
 import { UserService } from '../services/UserService'
 import { UserController } from '../controllers/UserController'
-import { socket } from '../../server'
 
 export class UserModule {
   private _repository: UserRepository
@@ -32,7 +31,7 @@ export class UserModule {
 
   get controller(): UserController {
     return !this._controller ?
-      (this._controller = new UserController(this.service, socket))
+      (this._controller = new UserController(this.service))
       : this._controller
   }
 }

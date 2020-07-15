@@ -4,7 +4,6 @@ import { WallService } from '../services/WallService'
 import { WallController } from '../controllers/WallController'
 import { userModule } from './UserModule'
 import { postModule } from './PostModule'
-import { socket } from '../../server'
 
 export class WallModule {
   private _repository: WallRepository
@@ -35,7 +34,7 @@ export class WallModule {
 
   get controller(): WallController {
     return !this._controller ?
-      (this._controller = new WallController(this.service, userModule.service, socket))
+      (this._controller = new WallController(this.service, userModule.service))
       : this._controller
   }
 }

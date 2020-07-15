@@ -1,12 +1,8 @@
 import { PostService } from '../services/PostService'
-import { SocketServer } from '../../socket/SocketServer'
 import sanitizeHtml from 'sanitize-html'
 
 export class PostController {
-  constructor(
-    private _postService: PostService,
-    private _socket: SocketServer,
-  ) {}
+  constructor(private _postService: PostService) {}
 
   create = async (wallPayload: {
     content: string,
