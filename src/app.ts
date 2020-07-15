@@ -21,6 +21,7 @@ app.use(security())
 app.use(securityHeaders())
 app.use(sanitizeData())
 app.use(cors())
+app.get('/', (req, res) => res.redirect(config.AGENT_CLIENT as string))
 
 const initializeApplication = async () => {
   try {
