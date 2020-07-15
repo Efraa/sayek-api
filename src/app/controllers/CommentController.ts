@@ -21,4 +21,10 @@ export class CommentController {
       }
     })
   }).then(async comment => await this._commentService.create(comment))
+
+  commentOnPost = async (query: {
+    page?: number,
+    perPage?: number,
+    postId: number,
+  }) => await this._commentService.commentOnPost(query)
 }

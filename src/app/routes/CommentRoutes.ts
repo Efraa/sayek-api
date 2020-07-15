@@ -16,6 +16,7 @@ export class CommentRoutes extends BaseRoutes {
 
   addRoutes() {
     this.api.post(Paths.comments.create, [ensureAuth, ...validators.create], this.create)
+    this.api.get(Paths.comments.list, [ensureAuth, ...validators.list], this.commentOnPost)
   }
 
   public create: RequestHandler = (req: Request, res: Response) =>
@@ -30,6 +31,22 @@ export class CommentRoutes extends BaseRoutes {
           return res
             .status(statusCodes.CREATE)
             .send(ResponseHandler.build(comment, false))
+      }, req, res
+    })
+  
+  public commentOnPost: RequestHandler = (req: Request, res: Response) =>
+    RouteMethod.build({
+      resolve: async () => {
+        const { page, perPage } = req.query
+        const list = await this._commentController.commentOnPost({
+          postId: parseInt(req.params.postId),
+          page: page as any,
+          perPage: perPage as any,
+        })
+        if (list)
+          return res
+            .status(statusCodes.OK)
+            .send(ResponseHandler.build(list, false))
       }, req, res
     })
 }

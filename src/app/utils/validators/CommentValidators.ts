@@ -14,4 +14,11 @@ const create = [
     })
 ]
 
-export const validators = { create }
+const list = [
+  param('postId', VALIDATOR.POST_ID)
+    .isLength({
+      min: 1
+    })
+]
+
+export const validators = { create, list }
