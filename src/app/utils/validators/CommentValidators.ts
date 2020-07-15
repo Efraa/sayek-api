@@ -21,4 +21,11 @@ const list = [
     })
 ]
 
-export const validators = { create, list }
+const deleted = [
+  param('commentId', VALIDATOR.POST_ID)
+    .isLength({
+      min: 1
+    })
+]
+
+export const validators = { create, list, deleted }

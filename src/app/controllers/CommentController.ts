@@ -27,4 +27,7 @@ export class CommentController {
     perPage?: number,
     postId: number,
   }) => await this._commentService.commentOnPost(query)
+
+  delete = async (commentId: number, userId: number) =>
+    await this._commentService.delete(commentId, userId)
 }

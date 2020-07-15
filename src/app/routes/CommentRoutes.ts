@@ -17,6 +17,7 @@ export class CommentRoutes extends BaseRoutes {
   addRoutes() {
     this.api.post(Paths.comments.create, [ensureAuth, ...validators.create], this.create)
     this.api.get(Paths.comments.list, [ensureAuth, ...validators.list], this.commentOnPost)
+    this.api.delete(Paths.comments.delete, [ensureAuth, ...validators.deleted], this.delete)
   }
 
   public create: RequestHandler = (req: Request, res: Response) =>
@@ -47,6 +48,18 @@ export class CommentRoutes extends BaseRoutes {
           return res
             .status(statusCodes.OK)
             .send(ResponseHandler.build(list, false))
+      }, req, res
+    })
+
+  public delete: RequestHandler = (req: Request, res: Response) =>
+    RouteMethod.build({
+      resolve: async () => {
+        const { commentId } = req.params
+        const deleted = await this._commentController.delete(parseInt(commentId), req.userLogged?.id)
+        if (deleted)
+          return res
+            .status(statusCodes.OK)
+            .send(ResponseHandler.build(deleted, false))
       }, req, res
     })
 }

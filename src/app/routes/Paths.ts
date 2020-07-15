@@ -26,6 +26,7 @@ const comments = {
   domain: '/comments',
   create: '/:postId',
   list: '/list/:postId',
+  delete: '/:commentId',
 }
 
 const notifications = {

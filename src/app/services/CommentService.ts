@@ -40,4 +40,8 @@ export class CommentService {
       pages: list.pages,
     }
   }
+
+  delete = async (commentId: number, userId: number) =>
+    await this._commentRepository.delete(commentId, userId)
+      .then(() => ({ commentId, userId }))
 }

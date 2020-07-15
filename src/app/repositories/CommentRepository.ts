@@ -33,4 +33,12 @@ export class CommentRepository {
       pages: Math.ceil(count / perPage),
     }
   }
+
+  delete = async (commentId: number, userId: number) =>
+    await this.repo.createQueryBuilder()
+      .softDelete()
+      .from(Comment)
+      .where('id = :commentId', { commentId })
+      .andWhere('userId = :userId', { userId })
+      .execute()
 }
