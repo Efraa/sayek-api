@@ -1,8 +1,6 @@
 import { Entity, Column, ManyToOne, JoinColumn } from 'typeorm'
 import { BaseEntity } from '../BaseEntity'
 import { lowercase, encode, capitalize } from '../transformers'
-
-// Relations
 import { User } from './User'
 
 @Entity({ name: 'notifications' })
@@ -42,8 +40,9 @@ export class Notification extends BaseEntity {
   @Column()
   userId: number
 
-  @ManyToOne(type => User, {
-    cascade: ['update', 'insert']
+  @ManyToOne(type => User, user => user.notifications, {
+    onDelete: 'SET NULL',
+    onUpdate: 'CASCADE', 
   })
   @JoinColumn()
   user: User

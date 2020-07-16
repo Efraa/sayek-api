@@ -15,11 +15,12 @@ export class WallRoutes extends BaseRoutes {
   }
 
   addRoutes() {
-    this.api.post(Paths.walls.create, [ensureAuth, ...validators.create], this.create)
-    this.api.post(Paths.walls.unjoin, [ensureAuth, ...validators.unjoin], this.unjoin)
-    this.api.post(Paths.walls.join, [ensureAuth, ...validators.unjoin], this.join)
-    this.api.get(Paths.walls.list, ensureAuth, this.list)
-    this.api.get(Paths.walls.get, ensureAuth, this.get)
+    this.api.use(ensureAuth)
+    this.api.post(Paths.walls.create, validators.create, this.create)
+    this.api.post(Paths.walls.unjoin, validators.unjoin, this.unjoin)
+    this.api.post(Paths.walls.join, validators.unjoin, this.join)
+    this.api.get(Paths.walls.list, this.list)
+    this.api.get(Paths.walls.get, this.get)
   }
 
   public create: RequestHandler = (req: Request, res: Response) =>

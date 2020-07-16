@@ -1,6 +1,7 @@
-import { Entity, Column, Index } from 'typeorm'
+import { Entity, Column, Index, OneToMany } from 'typeorm'
 import { BaseEntity } from '../BaseEntity'
 import { lowercase, encode, capitalize } from '../transformers'
+import { Notification } from '../entities/Notification'
 
 @Entity({ name: 'users' })
 @Index('user_social_network', ['networkType', 'networkId'], { unique: true })
@@ -32,4 +33,9 @@ export class User extends BaseEntity {
     nullable: true
   })
   data: object | null
+
+  @OneToMany(type => Notification, n => n.userId, {
+    onDelete: 'SET NULL'
+  })
+  notifications: Notification[]
 }

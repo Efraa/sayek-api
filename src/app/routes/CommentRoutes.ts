@@ -15,9 +15,10 @@ export class CommentRoutes extends BaseRoutes {
   }
 
   addRoutes() {
-    this.api.post(Paths.comments.create, [ensureAuth, ...validators.create], this.create)
-    this.api.get(Paths.comments.list, [ensureAuth, ...validators.list], this.commentOnPost)
-    this.api.delete(Paths.comments.delete, [ensureAuth, ...validators.deleted], this.delete)
+    this.api.use(ensureAuth)
+    this.api.post(Paths.comments.create, validators.create, this.create)
+    this.api.get(Paths.comments.list, validators.list, this.commentOnPost)
+    this.api.delete(Paths.comments.delete, validators.deleted, this.delete)
   }
 
   public create: RequestHandler = (req: Request, res: Response) =>

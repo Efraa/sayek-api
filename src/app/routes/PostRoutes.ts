@@ -15,11 +15,12 @@ export class PostRoutes extends BaseRoutes {
   }
 
   addRoutes() {
-    this.api.post(Paths.posts.create, [ensureAuth, ...validators.create], this.create)
-    this.api.get(Paths.posts.list, ensureAuth, this.list)
-    this.api.delete(Paths.posts.delete, [ensureAuth, ...validators.deleted], this.delete)
-    this.api.get(Paths.posts.get, ensureAuth, this.get)
-    this.api.get(Paths.posts.relatedPosts, ensureAuth, this.relatedPosts)
+    this.api.use(ensureAuth)
+    this.api.post(Paths.posts.create, validators.create, this.create)
+    this.api.get(Paths.posts.list, this.list)
+    this.api.get(Paths.posts.get, this.get)
+    this.api.get(Paths.posts.relatedPosts, this.relatedPosts)
+    this.api.delete(Paths.posts.delete, validators.deleted, this.delete)
   }
 
   public create: RequestHandler = (req: Request, res: Response) =>

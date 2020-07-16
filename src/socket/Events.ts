@@ -1,9 +1,4 @@
-// User Events
-const user = {
+export const Events = {
   CONNECTION: 'connection',
   ADD_USER: 'userCreate',
-}
-
-export const Events = {
-  ...user,
 }
