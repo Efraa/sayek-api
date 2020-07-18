@@ -7,6 +7,7 @@ import compression from 'compression'
 import { passport } from './middlewares/passport'
 import { Routes } from './http'
 import morgan from 'morgan'
+import cookieParser from 'cookie-parser'
 
 const app: Application = express()
 
@@ -15,6 +16,7 @@ app.use(express.urlencoded({ extended: false }))
 app.set('port', config.SERVER.PORT)
 app.use(passport.initialize())
 app.use(express.json())
+app.use(cookieParser())
 app.use(compression())
 app.use(morgan('dev'))
 app.use(security())

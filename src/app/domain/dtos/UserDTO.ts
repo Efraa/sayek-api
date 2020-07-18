@@ -15,4 +15,7 @@ export class UserDTO {
 
   @MapProp()
   networkId: string
+
+  @MapProp()
+  tokenVersion: number
 }

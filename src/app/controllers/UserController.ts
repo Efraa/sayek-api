@@ -1,10 +1,13 @@
 import { UserService } from '../services/UserService'
-import { JWToken } from '../../helpers'
+import { AuthToken } from '../../helpers'
+import { clientURI } from '../../helpers/clientURI'
+import { ErrorHandler, statusCodes } from '../../http'
+import { UserMessages } from '../utils/messages/UserMessages'
 
 export class UserController {
   constructor(private _userService: UserService) {}
 
-  async authOrCreate(userPayload: any) {
+  async authCallback(userPayload: any, state: string) {
     const userMapped = {
       name: userPayload.displayName,
       email: userPayload?.emails[0]?.value,
@@ -19,11 +22,30 @@ export class UserController {
     })
 
     if (!user) {
-      // create user
       const userEntity = await this._userService.mapToEntity(userMapped)
       user = await this._userService.create(userEntity)
     }
 
-    return await JWToken.generateToken(user)
+    const { data } = await AuthToken.verifyRandomToken(state)
+
+    return {
+      callbackURI: clientURI('/auth', data.query),
+      token: await AuthToken.generateRefreshToken(user)
+    }
+  }
+
+  async refreshToken(token?: string) {
+    if (!token)
+      throw ErrorHandler.build(statusCodes.UNAUTHORIZED, UserMessages.AUTHORIZATION)
+
+    const { user } = await AuthToken.verifyRefreshToken(token)
+    const userLogged = await this._userService.getById(user.id)
+    if (!user || !userLogged || userLogged?.tokenVersion !== user?.tokenVersion)
+      throw ErrorHandler.build(statusCodes.FORBIDDEN, UserMessages.TOKEN_VERIFY_ERROR)
+
+    return {
+      token: await AuthToken.generateToken(userLogged),
+      refreshToken: await AuthToken.generateRefreshToken(userLogged)
+    }
   }
 }

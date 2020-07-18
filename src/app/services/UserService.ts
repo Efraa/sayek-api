@@ -20,6 +20,7 @@ export class UserService {
     await this._userRepository.getBySocialNetwork(query)
       .then(user => user ? this._userMapper.mapToDTO(user) : undefined)
 
-  getById = async (id: number) =>
+  getById = async (id: number, map: boolean = true) =>
     await this._userRepository.getById(id)
+      .then(user => map ? this._userMapper.mapToDTO(user as User) : user)
 }

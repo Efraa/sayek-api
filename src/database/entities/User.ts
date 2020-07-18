@@ -38,4 +38,9 @@ export class User extends BaseEntity {
     onDelete: 'SET NULL'
   })
   notifications: Notification[]
+
+  @Column({
+    default: 1,
+  })
+  tokenVersion: number
 }

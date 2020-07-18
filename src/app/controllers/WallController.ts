@@ -3,6 +3,7 @@ import { UserService } from '../services/UserService'
 import { ErrorHandler, statusCodes } from '../../http'
 import { WallMessages } from '../utils/messages/WallMessages'
 import { WallDTO } from '../domain/dtos/WallDTO'
+import { User } from '../../database/entities/User'
 
 export class WallController {
   constructor(
@@ -14,12 +15,12 @@ export class WallController {
     name: string,
     creatorId: number,
   }) {
-    const creator = await this._userService.getById(wallPayload.creatorId)
+    const creator = await this._userService.getById(wallPayload.creatorId, false)
     if (!creator)
       throw ErrorHandler.build(statusCodes.BAD_REQUEST, WallMessages.CREATOR_NOT_FOUND)
 
     const wall = await this._wallService.mapToEntity({ ...wallPayload, creator })
-      .then(async wall => await this._wallService.create({ ...wall, members: [creator] }))
+      .then(async wall => await this._wallService.create({ ...wall, members: [creator as User] }))
 
     return { ...wall, members: undefined } as WallDTO
   }

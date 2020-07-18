@@ -1,1 +1,1 @@
-export { JWToken } from './JWToken'
+export { AuthToken } from './AuthToken'

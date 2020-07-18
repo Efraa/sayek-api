@@ -1,6 +1,6 @@
 import { Response, NextFunction, Request } from 'express'
 import { ResponseHandler, statusCodes } from '../http'
-import { JWToken } from '../helpers/JWToken'
+import { AuthToken } from '../helpers/AuthToken'
 import { Logger } from '../helpers/logging/Logger'
 import { UserMessages } from '../app/utils/messages/UserMessages'
 
@@ -15,7 +15,7 @@ export const ensureAuth = async (req: Request, res: Response, next: NextFunction
         .send(ResponseHandler.build(message))
     }
 
-    const { user } = await JWToken.verifyToken(token)
+    const { user } = await AuthToken.verifyToken(token)
     if (user) {
       req.userLogged = user
       next()

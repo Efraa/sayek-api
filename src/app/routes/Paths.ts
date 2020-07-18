@@ -2,6 +2,9 @@ const users = {
   domain: '/users',
   authFacebook: '/auth/facebook',
   authGoogle: '/auth/google',
+  refreshToken: '/refresh-token',
+  logout: '/logout',
+  editUsername: '/edit-username',
 }
 
 const walls = {
