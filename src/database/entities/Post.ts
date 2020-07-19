@@ -1,4 +1,4 @@
-import { Entity, Column, ManyToOne, JoinColumn, OneToMany } from 'typeorm'
+import { Entity, Column, ManyToOne, JoinColumn, OneToMany, ManyToMany, JoinTable } from 'typeorm'
 import { BaseEntity } from '../BaseEntity'
 import { lowercase } from '../transformers'
 
@@ -41,4 +41,8 @@ export class Post extends BaseEntity {
     { onDelete: 'SET NULL' }
   )
   comments: Comment[]
+
+  @ManyToMany(type => User)
+  @JoinTable({ name: 'likes' })
+  likes: User[]
 }

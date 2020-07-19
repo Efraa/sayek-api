@@ -11,6 +11,9 @@ export class PostDTO {
   userId: number
 
   @MapProp()
+  user: any
+
+  @MapProp()
   createAt: Date
 
   @MapProp()
@@ -21,4 +24,13 @@ export class PostDTO {
 
   @MapProp()
   commentsCount?: string
+
+  @MapProp()
+  likes: any
+
+  @MapProp()
+  likesCount?: string
+
+  @MapProp()
+  isLiked?: boolean
 }

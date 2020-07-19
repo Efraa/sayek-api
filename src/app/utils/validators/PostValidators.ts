@@ -25,4 +25,13 @@ const deleted = [
     })
 ]
 
-export const validators = { create, deleted }
+const like = [
+  param('postId', VALIDATOR.POST_ID)
+    .isLength({
+      min: 1
+    })
+    .toInt()
+    .isInt()
+]
+
+export const validators = { create, deleted, like }

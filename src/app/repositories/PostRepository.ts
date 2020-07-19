@@ -3,6 +3,14 @@ import { Post } from '../../database/entities/Post'
 
 export class PostRepository {
   private repo: Repository<Post>
+  private fields: string[] = [
+    'post.id',
+    'post.content',
+    'user.id',
+    'user.username',
+    'post.createAt',
+    'post.color'
+  ]
 
   constructor() {
     this.repo = getRepository(Post)
@@ -21,7 +29,11 @@ export class PostRepository {
   }) => {
     const { perPage, page, wallId } = query
     const [rows, count] = await this.repo.createQueryBuilder('post')
+      .leftJoinAndSelect('post.user', 'user')
+      .loadRelationCountAndMap('post.commentsCount', 'post.comments')
+      .loadRelationCountAndMap('post.likesCount', 'post.likes')
       .where('post.wallId = :wallId', { wallId })
+      .select(this.fields)
       .skip(((perPage * page) - perPage))
       .take(perPage)
       .orderBy('post.id', 'DESC')
@@ -41,7 +53,7 @@ export class PostRepository {
   }) => {
     const { perPage, page, userId } = query
     const [rows, count] = await this.repo.createQueryBuilder('post')
-      .where('post.userId = :userId', { userId })
+      .where('post.userId = :userId', { userId }) 
       .skip(((perPage * page) - perPage))
       .take(perPage)
       .orderBy('post.id', 'DESC')
@@ -54,10 +66,17 @@ export class PostRepository {
     }
   }
 
-  get = async (id: number) => await this.repo.createQueryBuilder('post')
-    .loadRelationCountAndMap('post.commentsCount', 'post.comments')
-    .where('post.id = :id', { id })
-    .getOne()
+  get = async (id: number, userId: number = 0) =>
+    await this.repo.createQueryBuilder('post')
+      .leftJoinAndSelect('post.user', 'user')
+      .leftJoinAndSelect('post.likes', 'like')
+      .loadRelationCountAndMap('post.commentsCount', 'post.comments')
+      .loadRelationCountAndMap('post.likesCount', 'post.likes')
+      .where('post.id = :id', { id })
+      .select(this.fields)
+      .addSelect(`CASE WHEN like.id = ${userId} THEN true END as liked`)
+      .orderBy('liked', 'ASC')
+      .getRawAndEntities()
 
   delete = async (postId: number, userId: number) =>
     await this.repo.createQueryBuilder()
@@ -70,18 +89,13 @@ export class PostRepository {
   relatedPosts = async (query: {
     page: number,
     perPage: number,
-    userId: number,
   }) => {
-    const { perPage, page, userId } = query
+    const { perPage, page } = query
     const [rows, count] = await this.repo.createQueryBuilder('post')
-      .leftJoinAndSelect('post.wall', 'wall')
-      .leftJoinAndSelect('wall.members', 'member')
-      .where('member.id = :userId', { userId })
-      .andWhere('post.userId != :userId', { userId })
-      .select('post.id')
-      .addSelect('post.content')
-      .addSelect('post.color')
-      .addSelect('post.createAt')
+      .leftJoinAndSelect('post.user', 'user')
+      .loadRelationCountAndMap('post.commentsCount', 'post.comments')
+      .loadRelationCountAndMap('post.likesCount', 'post.likes')
+      .select(this.fields)
       .skip(((perPage * page) - perPage))
       .take(perPage)
       .orderBy('post.id', 'DESC')
@@ -93,4 +107,20 @@ export class PostRepository {
       pages: Math.ceil(count / perPage),
     }
   }
+
+  like = async (postId: number, userId: number) =>
+    await this.repo.createQueryBuilder()
+      .relation(Post, 'likes')
+      .of(postId)
+      .add(userId)
+      .then(() => ({ postId, userId }))
+      .catch(() => undefined)
+
+  unlike = async (postId: number, userId: number) =>
+    await this.repo.createQueryBuilder()
+      .relation(Post, 'likes')
+      .of(postId)
+      .remove(userId)
+      .then(() => ({ postId, userId }))
+      .catch(() => undefined)
 }

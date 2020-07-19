@@ -23,6 +23,8 @@ const posts = {
   delete: '/:postId',
   get: '/:postId',
   relatedPosts: '/related-posts',
+  like: '/like/:postId',
+  unlike: '/unlike/:postId',
 }
 
 const comments = {

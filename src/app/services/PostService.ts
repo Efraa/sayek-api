@@ -68,30 +68,32 @@ export class PostService {
     }
   }
 
-  get = async (postId: number) => {
-    const comments = await this._commentsService.commentOnPost({ postId })
-    const post = await this._postRepository.get(postId)
-      .then(post => this._postMapper.mapToDTO(post as Post))
+  get = async (postId: number, userId?: number) => {
+    const { comments, all, pages  } = await this._commentsService.commentOnPost({ postId })
+    const post = await this._postRepository.get(postId, userId)
+      .then(post => ({ ...this._postMapper.mapToDTO(post.entities[0]), isLiked: post.raw[0].liked }))
 
     if (!post)
       throw ErrorHandler.build(statusCodes.NOT_FOUND, PostMessages.POST_NOT_FOUND)
     
     return {
       ...post,
-      ...comments,
+      comments: {
+        ...comments,
+        all,
+        pages,
+      },
     }
   }
 
   relatedPosts = async (query: {
-    userId: number,
     page?: number,
     perPage?: number,
   }) => {
-    const { page, perPage, userId } = query
+    const { page, perPage } = query
     const list = await this._postRepository.relatedPosts({
       page: page || config.PAGINATION.PAGE,
       perPage: perPage || config.PAGINATION.PER_PAGE,
-      userId,
     })
 
     if (!list.rows[0])
@@ -103,6 +105,12 @@ export class PostService {
       pages: list.pages,
     }
   }
+
+  like = async (postId: number, userId: number) =>
+    await this._postRepository.like(postId, userId)
+
+  unlike = async (postId: number, userId: number) =>
+    await this._postRepository.unlike(postId, userId)
 
   delete = async (postId: number, userId: number) =>
     await this._postRepository.delete(postId, userId)

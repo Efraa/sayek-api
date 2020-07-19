@@ -4,6 +4,7 @@ import { Response, RequestHandler, Request } from 'express'
 import { PostController } from '../controllers/PostController'
 import { validators } from '../utils/validators/PostValidators'
 import { ensureAuth } from '../../middlewares/AuthenticationMiddle'
+import { publicAuth } from '../../middlewares/publicAuthMiddle'
 import { Paths } from './Paths'
 
 
@@ -15,11 +16,17 @@ export class PostRoutes extends BaseRoutes {
   }
 
   addRoutes() {
+    // Public
+    this.api.use(publicAuth)
+    this.api.get(Paths.posts.relatedPosts, this.relatedPosts)
+    this.api.get(Paths.posts.get, this.get)
+
+    // Private
     this.api.use(ensureAuth)
     this.api.post(Paths.posts.create, validators.create, this.create)
     this.api.get(Paths.posts.list, this.list)
-    this.api.get(Paths.posts.get, this.get)
-    this.api.get(Paths.posts.relatedPosts, this.relatedPosts)
+    this.api.post(Paths.posts.like, validators.like, this.like)
+    this.api.post(Paths.posts.unlike, validators.like, this.unlike)
     this.api.delete(Paths.posts.delete, validators.deleted, this.delete)
   }
 
@@ -71,7 +78,7 @@ export class PostRoutes extends BaseRoutes {
   public get: RequestHandler = (req: Request, res: Response) =>
     RouteMethod.build({
       resolve: async () => {
-        const post = await this._postController.get(parseInt(req.params.postId))
+        const post = await this._postController.get(parseInt(req.params.postId), req.userLogged?.id)
         if (post)
           return res
             .status(statusCodes.OK)
@@ -84,7 +91,6 @@ export class PostRoutes extends BaseRoutes {
       resolve: async () => {
         const { page, perPage } = req.query
         const relatedPosts = await this._postController.relatedPosts({
-          userId: req.userLogged?.id,
           page: page as any,
           perPage: perPage as any,
         })
@@ -92,6 +98,28 @@ export class PostRoutes extends BaseRoutes {
           return res
             .status(statusCodes.OK)
             .send(ResponseHandler.build(relatedPosts, false))
+      }, req, res
+    })
+
+  public like: RequestHandler = (req: Request, res: Response) =>
+    RouteMethod.build({
+      resolve: async () => {
+        const liked = await this._postController.like(parseInt(req.params.postId), req.userLogged?.id)
+        if (liked)
+          return res
+            .status(statusCodes.OK)
+            .send(ResponseHandler.build(liked, false))
+      }, req, res
+    })
+
+  public unlike: RequestHandler = (req: Request, res: Response) =>
+    RouteMethod.build({
+      resolve: async () => {
+        const unlike = await this._postController.unlike(parseInt(req.params.postId), req.userLogged?.id)
+        if (unlike)
+          return res
+            .status(statusCodes.OK)
+            .send(ResponseHandler.build(unlike, false))
       }, req, res
     })
 }
