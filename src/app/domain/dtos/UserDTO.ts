@@ -8,6 +8,9 @@ export class UserDTO {
   name: string
 
   @MapProp()
+  username: string
+
+  @MapProp()
   email?: string
 
   @MapProp()

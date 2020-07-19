@@ -2,6 +2,7 @@ import { User } from 'src/database/entities/User'
 import { UserMapper } from '../domain/mappers/UserMapper'
 import { UserRepository } from '../repositories/UserRepository'
 import { UserDTO } from '../domain/dtos/UserDTO'
+import { generateUsername } from '../../helpers/username'
 
 export class UserService {
   constructor(
@@ -14,7 +15,13 @@ export class UserService {
 
   create = async (userEntity: User): Promise<UserDTO> =>
     await this._userRepository.save(userEntity)
-      .then(user => this._userMapper.mapToDTO(user))
+      .then(async user => {
+        const update = await this._userRepository.update(user, {
+          username: generateUsername(user.id)
+        })
+
+        return this._userMapper.mapToDTO(update)
+      })
 
   getBySocialNetwork = async (query: { networkType: string, networkId: number }) =>
     await this._userRepository.getBySocialNetwork(query)
@@ -23,4 +30,8 @@ export class UserService {
   getById = async (id: number, map: boolean = true) =>
     await this._userRepository.getById(id)
       .then(user => map ? this._userMapper.mapToDTO(user as User) : user)
+
+  editUsername = async (user: User, username: string) =>
+    await this._userRepository.update(user, { username })
+      .then(user => this._userMapper.mapToDTO(user))
 }

@@ -1,5 +1,7 @@
 import { config } from '../config'
 import querystring from 'querystring'
 
-export const clientURI = (pathname: string, query?: {}) =>
-  `${config.AGENT_CLIENT}${pathname}${query ? `/?${querystring.stringify(query)}` : ''}`
+const isEmpty = (obj) => Object.keys(obj).length === 0
+
+export const clientURI = (pathname?: string, query?: {}) =>
+  `${config.AGENT_CLIENT}${pathname ? pathname : ''}${isEmpty(query) ? '' : `/?${querystring.stringify(query)}`}`

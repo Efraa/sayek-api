@@ -16,4 +16,9 @@ export class UserRepository {
 
   getBySocialNetwork = async (where: { networkType: string, networkId: number }) =>
     await this.repo.findOne({ where })
+
+  update = async (user: User, data: any) => {
+    const updated = this.repo.merge(user, data)
+    return await this.save(updated)
+  }
 }

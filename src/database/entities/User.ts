@@ -1,4 +1,4 @@
-import { Entity, Column, Index, OneToMany } from 'typeorm'
+import { Entity, Column, Index, OneToMany, BeforeInsert } from 'typeorm'
 import { BaseEntity } from '../BaseEntity'
 import { lowercase, encode, capitalize } from '../transformers'
 import { Notification } from '../entities/Notification'
@@ -10,6 +10,12 @@ export class User extends BaseEntity {
     transformer: [capitalize]
   })
   name: string
+
+  @Column({
+    transformer: [capitalize],
+    nullable: true,
+  })
+  username: string
 
   @Column({
     transformer: [lowercase, encode],

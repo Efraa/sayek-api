@@ -3,6 +3,7 @@ import { AuthToken } from '../../helpers'
 import { clientURI } from '../../helpers/clientURI'
 import { ErrorHandler, statusCodes } from '../../http'
 import { UserMessages } from '../utils/messages/UserMessages'
+import { User } from '../../database/entities/User'
 
 export class UserController {
   constructor(private _userService: UserService) {}
@@ -29,7 +30,7 @@ export class UserController {
     const { data } = await AuthToken.verifyRandomToken(state)
 
     return {
-      callbackURI: clientURI('/auth', data.query),
+      callbackURI: clientURI('', data.query),
       token: await AuthToken.generateRefreshToken(user)
     }
   }
@@ -47,5 +48,13 @@ export class UserController {
       token: await AuthToken.generateToken(userLogged),
       refreshToken: await AuthToken.generateRefreshToken(userLogged)
     }
+  }
+
+  async editUsername(userId: number, username: string) {
+    const user = await this._userService.getById(userId, false)
+    if (!user)
+      throw ErrorHandler.build(statusCodes.BAD_REQUEST, UserMessages.NOT_FOUND)
+
+    return await this._userService.editUsername(user as User, username)
   }
 }

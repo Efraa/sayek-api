@@ -1,12 +1,13 @@
-import { check, param } from 'express-validator'
+import { check } from 'express-validator'
 import { UserMessages } from '../messages/UserMessages'
 
 const { VALIDATOR } = UserMessages
 
-// const verifyEmail = [
-//   check('email', VALIDATOR.EMAIL)
-//     .isEmail()
-//     .normalizeEmail({ all_lowercase: true })
-// ]
+const edit = [
+  check('username', VALIDATOR.USERNAME)
+    .isLength({
+      min: 3
+    })
+]
 
-export const validators = {}
+export const validators = { edit }

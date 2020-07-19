@@ -6,6 +6,8 @@ import { facebookMiddle, googleMiddle } from '../../middlewares/passport'
 import { Paths } from './Paths'
 import { AuthToken } from '../../helpers'
 import { UserMessages } from '../utils/messages/UserMessages'
+import { validators } from '../utils/validators/UserValidators'
+import { ensureAuth } from '../../middlewares/AuthenticationMiddle'
 
 export class UserRoutes extends BaseRoutes {
 
@@ -20,7 +22,10 @@ export class UserRoutes extends BaseRoutes {
     this.api.get(`${Paths.users.authFacebook}/cb`, facebookMiddle.authenticateCallBack(), this.authCallback)
     this.api.get(`${Paths.users.authGoogle}/cb`, googleMiddle.authenticateCallBack(), this.authCallback)
     this.api.post(Paths.users.refreshToken, this.refreshToken)
+
+    this.api.use(ensureAuth)
     this.api.post(Paths.users.logout, this.logout)
+    this.api.put(Paths.users.editUsername, validators.edit, this.editUsername)
   }
 
   public authCallback: RequestHandler = (req: Request, res: Response) =>
@@ -34,6 +39,16 @@ export class UserRoutes extends BaseRoutes {
             })
         }
       }, req, res
+    })
+
+  public editUsername: RequestHandler = (req: Request, res: Response) =>
+    RouteMethod.build({
+      resolve: async () => await this._userController.editUsername(req.userLogged?.id, req.body.username)
+        .then(user => {
+          return res
+            .status(statusCodes.OK)
+            .send(ResponseHandler.build(user, false))
+        }), req, res
     })
 
   public refreshToken: RequestHandler = (req: Request, res: Response) =>
