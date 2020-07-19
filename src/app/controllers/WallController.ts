@@ -47,11 +47,6 @@ export class WallController {
     userId: number,
   }) => await this._wallService.list(query)
 
-  async get(wallId: number, memberId: number) {
-    const memberIsJoined = await this._wallService.memberIsJoined(wallId, memberId)
-    if (!memberIsJoined)
-      throw ErrorHandler.build(statusCodes.BAD_REQUEST, WallMessages.NOT_A_MEMBER)
-
-    return await this._wallService.get(wallId)
-  }
+  get = async (wallId: number, userId?: number) =>
+    await this._wallService.get(wallId, userId)
 }

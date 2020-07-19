@@ -3,7 +3,7 @@ import { ResponseHandler, RouteMethod, statusCodes } from '../../http'
 import { Response, RequestHandler, Request } from 'express'
 import { WallController } from '../controllers/WallController'
 import { validators } from '../utils/validators/WallValidators'
-import { ensureAuth } from '../../middlewares/AuthenticationMiddle'
+import { ensureAuth, publicAuth } from '../../middlewares/AuthenticationMiddle'
 import { Paths } from './Paths'
 
 
@@ -15,12 +15,15 @@ export class WallRoutes extends BaseRoutes {
   }
 
   addRoutes() {
+    // Public
+    this.api.get(Paths.walls.get, publicAuth, this.get)
+
+    // Private
     this.api.use(ensureAuth)
     this.api.post(Paths.walls.create, validators.create, this.create)
     this.api.post(Paths.walls.unjoin, validators.unjoin, this.unjoin)
     this.api.post(Paths.walls.join, validators.unjoin, this.join)
     this.api.get(Paths.walls.list, this.list)
-    this.api.get(Paths.walls.get, this.get)
   }
 
   public create: RequestHandler = (req: Request, res: Response) =>

@@ -3,8 +3,7 @@ import { ResponseHandler, RouteMethod, statusCodes } from '../../http'
 import { Response, RequestHandler, Request } from 'express'
 import { PostController } from '../controllers/PostController'
 import { validators } from '../utils/validators/PostValidators'
-import { ensureAuth } from '../../middlewares/AuthenticationMiddle'
-import { publicAuth } from '../../middlewares/publicAuthMiddle'
+import { ensureAuth, publicAuth } from '../../middlewares/AuthenticationMiddle'
 import { Paths } from './Paths'
 
 
@@ -17,9 +16,8 @@ export class PostRoutes extends BaseRoutes {
 
   addRoutes() {
     // Public
-    this.api.use(publicAuth)
-    this.api.get(Paths.posts.relatedPosts, this.relatedPosts)
-    this.api.get(Paths.posts.get, this.get)
+    this.api.get(Paths.posts.relatedPosts, publicAuth, this.relatedPosts)
+    this.api.get(Paths.posts.get, publicAuth, this.get)
 
     // Private
     this.api.use(ensureAuth)

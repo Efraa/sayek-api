@@ -66,17 +66,38 @@ export class PostRepository {
     }
   }
 
-  get = async (id: number, userId: number = 0) =>
+  get = async (id: number) =>
     await this.repo.createQueryBuilder('post')
       .leftJoinAndSelect('post.user', 'user')
-      .leftJoinAndSelect('post.likes', 'like')
       .loadRelationCountAndMap('post.commentsCount', 'post.comments')
       .loadRelationCountAndMap('post.likesCount', 'post.likes')
       .where('post.id = :id', { id })
       .select(this.fields)
-      .addSelect(`CASE WHEN like.id = ${userId} THEN true END as liked`)
-      .orderBy('liked', 'ASC')
-      .getRawAndEntities()
+      .getOne()
+
+  isLiked = async (postId: number, userId: number) =>
+    await this.repo.createQueryBuilder('post')
+      .leftJoinAndSelect('post.likes', 'like')
+      .where('post.id = :postId', { postId })
+      .andWhere('like.id = :userId', { userId })
+      .select('post.id')
+      .getOne()
+
+  likesMany = async (query: {
+    userId: number,
+    postsIds: number[]
+  }) => {
+    const { userId, postsIds } = query
+    const posts = await this.repo.createQueryBuilder('post')
+      .leftJoinAndSelect('post.likes', 'like')
+      .where('like.id = :userId', { userId })
+      .andWhere('post.id in (:...postsIds)', { postsIds })
+      .select('post.id')
+      .orderBy('post.id', 'DESC')
+      .getMany()
+
+    return posts
+  }
 
   delete = async (postId: number, userId: number) =>
     await this.repo.createQueryBuilder()

@@ -13,10 +13,15 @@ export class PostMapper {
     return postDTO
   }
 
-  public mapToEntity = async (from: any): Promise<Post> =>
+  mapToEntity = async (from: any): Promise<Post> =>
     await this._postRepository.create(from)
 
-  public mapListToDTO(posts: Post[]): PostDTO[] {
+  mapListToDTO(posts: Post[]): PostDTO[] {
     return posts.map(post => this.mapToDTO(post))
   }
+
+  mapListWithLikesToDTO = (posts: Post[], likes: Post[]): PostDTO[] =>
+    posts.map(p => likes.find(l => l.id === p.id)
+      ? this.mapToDTO({ ...p, isLiked: true } as Post)
+      : this.mapToDTO(p))
 }
