@@ -3,7 +3,7 @@ import { ResponseHandler, RouteMethod, statusCodes } from '../../http'
 import { Response, RequestHandler, Request } from 'express'
 import { CommentController } from '../controllers/CommentController'
 import { validators } from '../utils/validators/CommentValidators'
-import { ensureAuth } from '../../middlewares/AuthenticationMiddle'
+import { ensureAuth, publicAuth } from '../../middlewares/AuthenticationMiddle'
 import { Paths } from './Paths'
 
 
@@ -15,9 +15,11 @@ export class CommentRoutes extends BaseRoutes {
   }
 
   addRoutes() {
+    // Public
+    this.api.get(Paths.comments.list, validators.list, this.commentOnPost)
+
     this.api.use(ensureAuth)
     this.api.post(Paths.comments.create, validators.create, this.create)
-    this.api.get(Paths.comments.list, validators.list, this.commentOnPost)
     this.api.delete(Paths.comments.delete, validators.deleted, this.delete)
   }
 

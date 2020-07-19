@@ -6,4 +6,7 @@ export class CommentDTO {
 
   @MapProp()
   content: string
+
+  @MapProp()
+  user: {}
 }

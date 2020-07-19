@@ -3,6 +3,13 @@ import { Comment } from '../../database/entities/Comment'
 
 export class CommentRepository {
   private repo: Repository<Comment>
+  private fields: string[] = [
+    'comment.id',
+    'comment.content',
+    'comment.createAt',
+    'user.id',
+    'user.username',
+  ]
 
   constructor() {
     this.repo = getRepository(Comment)
@@ -21,10 +28,12 @@ export class CommentRepository {
   }) => {
     const { perPage, page, postId } = query
     const [rows, count] = await this.repo.createQueryBuilder('comment')
+      .leftJoinAndSelect('comment.user', 'user')  
       .where('comment.postId = :postId', { postId })
+      .select(this.fields)
       .skip(((perPage * page) - perPage))
       .take(perPage)
-      .orderBy('comment.id', 'DESC')
+      .orderBy('comment.id', 'ASC')
       .getManyAndCount()
 
     return {
