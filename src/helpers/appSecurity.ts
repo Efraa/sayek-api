@@ -8,7 +8,7 @@ const corsOptions : c.CorsOptions = {
   allowedHeaders: ['Content-Type', 'Authorization', 'Origin', 'X-Requested-With', 'Accept'],
   methods: ['POST', 'GET', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'],
   credentials: true,
-  // origin: config.AGENT_CLIENT,
+  origin: config.AGENT_CLIENT,
 }
 
 const securityOptions = {
