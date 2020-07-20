@@ -9,9 +9,10 @@ export const googleMiddle = {
       state: await AuthToken.generateRandomToken({ query: req.query }),
     })(req, res, next),
 
-  authenticateCallBack: () => passport.authenticate('google', {
-    failureRedirect: '/',
-    session: false,
-    passReqToCallback: true,
-  })
+  authenticateCallBack: () =>
+    passport.authenticate('google', {
+      failureRedirect: '/',
+      session: false,
+      passReqToCallback: true,
+    }),
 }

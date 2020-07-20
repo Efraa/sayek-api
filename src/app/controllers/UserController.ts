@@ -15,11 +15,11 @@ export class UserController {
       networkType: userPayload.provider,
       networkId: userPayload.id,
       picture: userPayload?.photos[0]?.value,
-      data: { ...userPayload['_json'] }
+      data: { ...userPayload['_json'] },
     }
     let user = await this._userService.getBySocialNetwork({
       networkId: userMapped.networkId,
-      networkType: userMapped.networkType
+      networkType: userMapped.networkType,
     })
 
     if (!user) {
@@ -31,22 +31,28 @@ export class UserController {
 
     return {
       callbackURI: clientURI('', data.query),
-      token: await AuthToken.generateRefreshToken(user)
+      token: await AuthToken.generateRefreshToken(user),
     }
   }
 
   async refreshToken(token?: string) {
     if (!token)
-      throw ErrorHandler.build(statusCodes.UNAUTHORIZED, UserMessages.AUTHORIZATION)
+      throw ErrorHandler.build(
+        statusCodes.UNAUTHORIZED,
+        UserMessages.AUTHORIZATION
+      )
 
     const { user } = await AuthToken.verifyRefreshToken(token)
     const userLogged = await this._userService.getById(user.id)
     if (!user || !userLogged || userLogged?.tokenVersion !== user?.tokenVersion)
-      throw ErrorHandler.build(statusCodes.FORBIDDEN, UserMessages.TOKEN_VERIFY_ERROR)
+      throw ErrorHandler.build(
+        statusCodes.FORBIDDEN,
+        UserMessages.TOKEN_VERIFY_ERROR
+      )
 
     return {
       token: await AuthToken.generateToken(userLogged),
-      refreshToken: await AuthToken.generateRefreshToken(userLogged)
+      refreshToken: await AuthToken.generateRefreshToken(userLogged),
     }
   }
 
@@ -55,6 +61,6 @@ export class UserController {
     if (!user)
       throw ErrorHandler.build(statusCodes.BAD_REQUEST, UserMessages.NOT_FOUND)
 
-    return await this._userService.editUsername(user as User, username)
+    return this._userService.editUsername(user as User, username)
   }
 }

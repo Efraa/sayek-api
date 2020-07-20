@@ -4,19 +4,19 @@ import { NotificationRepository } from '../../repositories/NotificationRepositor
 import { NotificationDTO } from '../dtos/NotificationDTO'
 
 export class NotificationMapper {
-  constructor(
-    private _notificationRepository: NotificationRepository,
-  ) {}
+  constructor(private _notificationRepository: NotificationRepository) {}
 
-  public mapToDTO(from: Notification): NotificationDTO {
-    const notificationDTO: NotificationDTO = new Mapper().map(from, new NotificationDTO())
+  mapToDTO(from: Notification): NotificationDTO {
+    const notificationDTO: NotificationDTO = new Mapper().map(
+      from,
+      new NotificationDTO()
+    )
     return notificationDTO
   }
 
-  public mapToEntity = async (from: any): Promise<Notification> =>
-    await this._notificationRepository.create(from)
+  mapToEntity = async (from: any): Promise<Notification> =>
+    this._notificationRepository.create(from)
 
-  public mapListToDTO(notifications: Notification[]): NotificationDTO[] {
-    return notifications.map(notification => this.mapToDTO(notification))
-  }
+  mapListToDTO = (notifications: Notification[]): NotificationDTO[] =>
+    notifications.map(notification => this.mapToDTO(notification))
 }

@@ -8,9 +8,9 @@ export class NotificationRepository {
     this.repo = getRepository(Notification)
   }
 
-  getById = async (id: number) => await this.repo.findOne({ id })
+  getById = async (id: number) => this.repo.findOne({ id })
 
   create = async (payload: any) => this.repo.create(payload as Notification)
 
-  save = async (notification: Notification) => await this.repo.save(notification)
+  save = async (notification: Notification) => this.repo.save(notification)
 }

@@ -4,19 +4,16 @@ import { WallRepository } from '../../repositories/WallRepository'
 import { WallDTO } from '../dtos/WallDTO'
 
 export class WallMapper {
-  constructor(
-    private _wallRepository: WallRepository,
-  ) {}
+  constructor(private _wallRepository: WallRepository) {}
 
-  public mapToDTO(from: Wall): WallDTO {
+  mapToDTO(from: Wall): WallDTO {
     const wallDTO: WallDTO = new Mapper().map(from, new WallDTO())
     return wallDTO
   }
 
-  public mapToEntity = async (from: any): Promise<Wall> =>
-    await this._wallRepository.create(from)
+  mapToEntity = async (from: any): Promise<Wall> =>
+    this._wallRepository.create(from)
 
-  public mapListToDTO(walls: Wall[]): WallDTO[] {
-    return walls.map(wall => this.mapToDTO(wall))
-  }
+  mapListToDTO = (walls: Wall[]): WallDTO[] =>
+    walls.map(wall => this.mapToDTO(wall))
 }

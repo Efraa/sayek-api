@@ -4,19 +4,16 @@ import { CommentRepository } from '../../repositories/CommentRepository'
 import { CommentDTO } from '../dtos/CommentDTO'
 
 export class CommentMapper {
-  constructor(
-    private _commentRepository: CommentRepository,
-  ) {}
+  constructor(private _commentRepository: CommentRepository) {}
 
-  public mapToDTO(from: Comment): CommentDTO {
+  mapToDTO(from: Comment): CommentDTO {
     const commentDTO: CommentDTO = new Mapper().map(from, new CommentDTO())
     return commentDTO
   }
 
-  public mapToEntity = async (from: any): Promise<Comment> =>
-    await this._commentRepository.create(from)
+  mapToEntity = async (from: any): Promise<Comment> =>
+    this._commentRepository.create(from)
 
-  public mapListToDTO(comments: Comment[]): CommentDTO[] {
-    return comments.map(comment => this.mapToDTO(comment))
-  }
+  mapListToDTO = (comments: Comment[]): CommentDTO[] =>
+    comments.map(comment => this.mapToDTO(comment))
 }

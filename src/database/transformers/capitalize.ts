@@ -6,6 +6,7 @@ export const capitalize: ValueTransformer = {
 
     return string
   },
-  from: (databaseValue: string) => databaseValue &&
+  from: (databaseValue: string) =>
+    databaseValue &&
     `${databaseValue.charAt(0).toUpperCase()}${databaseValue.slice(1)}`,
 }

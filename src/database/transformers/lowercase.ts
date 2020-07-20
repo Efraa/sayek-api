@@ -6,5 +6,5 @@ export const lowercase: ValueTransformer = {
 
     return string
   },
-  from: (databaseValue: string) => databaseValue
+  from: (databaseValue: string) => databaseValue,
 }

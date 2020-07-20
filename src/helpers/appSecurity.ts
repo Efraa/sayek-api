@@ -4,8 +4,14 @@ import lusca from 'lusca'
 import xss from 'xss-clean'
 import helmet from 'helmet'
 
-const corsOptions : c.CorsOptions = {
-  allowedHeaders: ['Content-Type', 'Authorization', 'Origin', 'X-Requested-With', 'Accept'],
+const corsOptions: c.CorsOptions = {
+  allowedHeaders: [
+    'Content-Type',
+    'Authorization',
+    'Origin',
+    'X-Requested-With',
+    'Accept',
+  ],
   methods: ['POST', 'GET', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'],
   credentials: true,
   origin: config.AGENT_CLIENT,

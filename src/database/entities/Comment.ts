@@ -9,7 +9,7 @@ import { Post } from './Post'
 @Entity({ name: 'comments' })
 export class Comment extends BaseEntity {
   @Column({
-    transformer: [lowercase]
+    transformer: [lowercase],
   })
   content: string
 
@@ -17,7 +17,7 @@ export class Comment extends BaseEntity {
   userId: number
 
   @ManyToOne(type => User, {
-    cascade: ['update', 'insert']
+    cascade: ['update', 'insert'],
   })
   @JoinColumn()
   user: User
@@ -26,7 +26,7 @@ export class Comment extends BaseEntity {
   postId: number
 
   @ManyToOne(type => Post, post => post.comments, {
-    cascade: ['update', 'insert']
+    cascade: ['update', 'insert'],
   })
   @JoinColumn()
   post: Post

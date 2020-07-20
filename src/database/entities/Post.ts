@@ -1,4 +1,12 @@
-import { Entity, Column, ManyToOne, JoinColumn, OneToMany, ManyToMany, JoinTable } from 'typeorm'
+import {
+  Entity,
+  Column,
+  ManyToOne,
+  JoinColumn,
+  OneToMany,
+  ManyToMany,
+  JoinTable,
+} from 'typeorm'
 import { BaseEntity } from '../BaseEntity'
 import { lowercase } from '../transformers'
 
@@ -10,12 +18,12 @@ import { Comment } from './Comment'
 @Entity({ name: 'posts' })
 export class Post extends BaseEntity {
   @Column({
-    transformer: [lowercase]
+    transformer: [lowercase],
   })
   content: string
 
   @Column({
-    transformer: [lowercase]
+    transformer: [lowercase],
   })
   color: string
 
@@ -23,7 +31,7 @@ export class Post extends BaseEntity {
   wallId: number
 
   @ManyToOne(type => Wall, wall => wall.posts, {
-    cascade: ['update', 'insert']
+    cascade: ['update', 'insert'],
   })
   @JoinColumn()
   wall: Wall
@@ -32,14 +40,12 @@ export class Post extends BaseEntity {
   userId: number
 
   @ManyToOne(type => User, {
-    cascade: ['update', 'insert']
+    cascade: ['update', 'insert'],
   })
   @JoinColumn()
   user: User
 
-  @OneToMany(type => Comment, comment => comment.post,
-    { onDelete: 'SET NULL' }
-  )
+  @OneToMany(type => Comment, comment => comment.post, { onDelete: 'SET NULL' })
   comments: Comment[]
 
   @ManyToMany(type => User)

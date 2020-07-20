@@ -7,31 +7,36 @@ import { generateUsername } from '../../helpers/username'
 export class UserService {
   constructor(
     private _userRepository: UserRepository,
-    private _userMapper: UserMapper,
+    private _userMapper: UserMapper
   ) {}
 
   mapToEntity = async (userPayload: UserPayload): Promise<User> =>
-    await this._userMapper.mapToEntity(userPayload)
+    this._userMapper.mapToEntity(userPayload)
 
   create = async (userEntity: User): Promise<UserDTO> =>
-    await this._userRepository.save(userEntity)
-      .then(async user => {
-        const update = await this._userRepository.update(user, {
-          username: generateUsername(user.id)
-        })
-
-        return this._userMapper.mapToDTO(update)
+    this._userRepository.save(userEntity).then(async user => {
+      const update = await this._userRepository.update(user, {
+        username: generateUsername(user.id),
       })
 
-  getBySocialNetwork = async (query: { networkType: string, networkId: number }) =>
-    await this._userRepository.getBySocialNetwork(query)
-      .then(user => user ? this._userMapper.mapToDTO(user) : undefined)
+      return this._userMapper.mapToDTO(update)
+    })
+
+  getBySocialNetwork = async (query: {
+    networkType: string
+    networkId: number
+  }) =>
+    this._userRepository
+      .getBySocialNetwork(query)
+      .then(user => (user ? this._userMapper.mapToDTO(user) : undefined))
 
   getById = async (id: number, map: boolean = true) =>
-    await this._userRepository.getById(id)
-      .then(user => map ? this._userMapper.mapToDTO(user as User) : user)
+    this._userRepository
+      .getById(id)
+      .then(user => (map ? this._userMapper.mapToDTO(user as User) : user))
 
   editUsername = async (user: User, username: string) =>
-    await this._userRepository.update(user, { username })
+    this._userRepository
+      .update(user, { username })
       .then(user => this._userMapper.mapToDTO(user))
 }

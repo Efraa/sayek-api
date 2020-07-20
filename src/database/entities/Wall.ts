@@ -1,4 +1,12 @@
-import { Entity, Column, ManyToOne, JoinColumn, OneToMany, ManyToMany, JoinTable } from 'typeorm'
+import {
+  Entity,
+  Column,
+  ManyToOne,
+  JoinColumn,
+  OneToMany,
+  ManyToMany,
+  JoinTable,
+} from 'typeorm'
 import { BaseEntity } from '../BaseEntity'
 import { capitalize } from '../transformers'
 
@@ -9,7 +17,7 @@ import { Post } from './Post'
 @Entity({ name: 'walls' })
 export class Wall extends BaseEntity {
   @Column({
-    transformer: [capitalize]
+    transformer: [capitalize],
   })
   name: string
 
@@ -17,14 +25,12 @@ export class Wall extends BaseEntity {
   creatorId: number
 
   @ManyToOne(type => User, {
-    cascade: ['update', 'insert']
+    cascade: ['update', 'insert'],
   })
   @JoinColumn()
   creator: User
 
-  @OneToMany(type => Post, post => post.wall,
-    { onDelete: 'SET NULL' }
-  )
+  @OneToMany(type => Post, post => post.wall, { onDelete: 'SET NULL' })
   posts: Post[]
 
   @ManyToMany(type => User)

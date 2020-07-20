@@ -3,42 +3,46 @@ import { ResponseHandler, RouteMethod, statusCodes } from '../../http'
 import { Response, RequestHandler, Request } from 'express'
 import { CommentController } from '../controllers/CommentController'
 import { validators } from '../utils/validators/CommentValidators'
-import { ensureAuth, publicAuth } from '../../middlewares/AuthenticationMiddle'
-import { Paths } from './Paths'
-
+import { ensureAuth } from '../../middlewares/AuthenticationMiddle'
+import { Endpoints } from './Endpoints'
 
 export class CommentRoutes extends BaseRoutes {
-
-  constructor(modulePath: string, private _commentController: CommentController) {
+  constructor(
+    modulePath: string,
+    private _commentController: CommentController
+  ) {
     super(modulePath)
     this.addRoutes()
   }
 
   addRoutes() {
     // Public
-    this.api.get(Paths.comments.list, validators.list, this.commentOnPost)
+    this.api.get(Endpoints.comments.list, validators.list, this.commentOnPost)
 
     this.api.use(ensureAuth)
-    this.api.post(Paths.comments.create, validators.create, this.create)
-    this.api.delete(Paths.comments.delete, validators.deleted, this.delete)
+    this.api.post(Endpoints.comments.create, validators.create, this.create)
+    this.api.delete(Endpoints.comments.delete, validators.deleted, this.delete)
   }
 
-  public create: RequestHandler = (req: Request, res: Response) =>
+  create: RequestHandler = (req: Request, res: Response) =>
     RouteMethod.build({
-      resolve: async () => {
-        const comment = await this._commentController.create({
-          userId: req.userLogged?.id,
-          content: req.body.content,
-          postId: parseInt(req.params.postId),
-        })
-        if (comment)
-          return res
-            .status(statusCodes.CREATE)
-            .send(ResponseHandler.build(comment, false))
-      }, req, res
+      resolve: async () =>
+        this._commentController
+          .create({
+            userId: req.userLogged?.id,
+            content: req.body.content,
+            postId: parseInt(req.params.postId),
+          })
+          .then(comment =>
+            res
+              .status(statusCodes.CREATE)
+              .send(ResponseHandler.build(comment, false))
+          ),
+      req,
+      res,
     })
-  
-  public commentOnPost: RequestHandler = (req: Request, res: Response) =>
+
+  commentOnPost: RequestHandler = (req: Request, res: Response) =>
     RouteMethod.build({
       resolve: async () => {
         const { page, perPage } = req.query
@@ -51,18 +55,22 @@ export class CommentRoutes extends BaseRoutes {
           return res
             .status(statusCodes.OK)
             .send(ResponseHandler.build(list, false))
-      }, req, res
+      },
+      req,
+      res,
     })
 
-  public delete: RequestHandler = (req: Request, res: Response) =>
+  delete: RequestHandler = (req: Request, res: Response) =>
     RouteMethod.build({
-      resolve: async () => {
-        const { commentId } = req.params
-        const deleted = await this._commentController.delete(parseInt(commentId), req.userLogged?.id)
-        if (deleted)
-          return res
-            .status(statusCodes.OK)
-            .send(ResponseHandler.build(deleted, false))
-      }, req, res
+      resolve: async () =>
+        this._commentController
+          .delete(parseInt(req.params.commentId), req.userLogged?.id)
+          .then(deleted =>
+            res
+              .status(statusCodes.OK)
+              .send(ResponseHandler.build(deleted, false))
+          ),
+      req,
+      res,
     })
 }

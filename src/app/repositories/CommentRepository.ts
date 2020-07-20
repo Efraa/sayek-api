@@ -15,23 +15,24 @@ export class CommentRepository {
     this.repo = getRepository(Comment)
   }
 
-  getById = async (id: number) => await this.repo.findOne({ id })
+  getById = async (id: number) => this.repo.findOne({ id })
 
   create = async (payload: any) => this.repo.create(payload as Comment)
 
-  save = async (comment: Comment) => await this.repo.save(comment)
+  save = async (comment: Comment) => this.repo.save(comment)
 
   commentOnPost = async (query: {
-    page: number,
-    perPage: number,
-    postId: number,
+    page: number
+    perPage: number
+    postId: number
   }) => {
     const { perPage, page, postId } = query
-    const [rows, count] = await this.repo.createQueryBuilder('comment')
-      .leftJoinAndSelect('comment.user', 'user')  
+    const [rows, count] = await this.repo
+      .createQueryBuilder('comment')
+      .leftJoinAndSelect('comment.user', 'user')
       .where('comment.postId = :postId', { postId })
       .select(this.fields)
-      .skip(((perPage * page) - perPage))
+      .skip(perPage * page - perPage)
       .take(perPage)
       .orderBy('comment.id', 'ASC')
       .getManyAndCount()
@@ -44,7 +45,8 @@ export class CommentRepository {
   }
 
   delete = async (commentId: number, userId: number) =>
-    await this.repo.createQueryBuilder()
+    this.repo
+      .createQueryBuilder()
       .softDelete()
       .from(Comment)
       .where('id = :commentId', { commentId })
