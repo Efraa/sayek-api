@@ -6,23 +6,23 @@ import { User } from './User'
 @Entity({ name: 'notifications' })
 export class Notification extends BaseEntity {
   @Column({
-    transformer: [capitalize]
+    transformer: [capitalize],
   })
   title: string
 
   @Column({
-    transformer: [capitalize]
+    transformer: [capitalize],
   })
   body: string
 
   @Column({
     type: 'simple-json',
-    nullable: true
+    nullable: true,
   })
   data?: object | null
 
   @Column({
-    default: false
+    default: false,
   })
   read: boolean
 
@@ -30,7 +30,7 @@ export class Notification extends BaseEntity {
   type: string
 
   @Column({
-    name: 'entity_id'
+    name: 'entity_id',
   })
   entityId: number
 
@@ -42,7 +42,7 @@ export class Notification extends BaseEntity {
 
   @ManyToOne(type => User, user => user.notifications, {
     onDelete: 'SET NULL',
-    onUpdate: 'CASCADE', 
+    onUpdate: 'CASCADE',
   })
   @JoinColumn()
   user: User

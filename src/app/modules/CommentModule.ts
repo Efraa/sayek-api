@@ -11,28 +11,26 @@ export class CommentModule {
   private _controller: CommentController
 
   get repository(): CommentRepository {
-    return !this._repository ?
-      (this._repository = new CommentRepository())
-    : this._repository
+    return !this._repository
+      ? (this._repository = new CommentRepository())
+      : this._repository
   }
 
   get mapper(): CommentMapper {
-    return !this._mapper ?
-      (this._mapper = new CommentMapper(this.repository))
+    return !this._mapper
+      ? (this._mapper = new CommentMapper(this.repository))
       : this._mapper
   }
 
   get service(): CommentService {
-    return !this._service ?
-      (this._service = new CommentService(
-        this.repository,
-        this.mapper,
-      )) : this._service
+    return !this._service
+      ? (this._service = new CommentService(this.repository, this.mapper))
+      : this._service
   }
 
   get controller(): CommentController {
-    return !this._controller ?
-      (this._controller = new CommentController(this.service, socket))
+    return !this._controller
+      ? (this._controller = new CommentController(this.service, socket))
       : this._controller
   }
 }

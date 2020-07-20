@@ -7,7 +7,9 @@ const format = wFormat.combine(
   wFormat.timestamp({
     format: 'YYYY-MM-DD HH:mm:ss',
   }),
-  wFormat.printf(info => `[${info.timestamp}]: ${info.level.toUpperCase()} | ${info.message}`),
+  wFormat.printf(
+    info => `[${info.timestamp}]: ${info.level.toUpperCase()} | ${info.message}`
+  )
 )
 
 const defaultLogger = createLogger({
@@ -18,9 +20,9 @@ const defaultLogger = createLogger({
     new transports.File({
       maxsize: 5000000,
       maxFiles: 2,
-      filename: 'logs/server.log'
+      filename: 'logs/server.log',
     }),
-  ]
+  ],
 })
 
 export const Logger = {

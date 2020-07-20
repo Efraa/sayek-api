@@ -7,7 +7,7 @@ import { Notification } from '../entities/Notification'
 @Index('user_social_network', ['networkType', 'networkId'], { unique: true })
 export class User extends BaseEntity {
   @Column({
-    transformer: [capitalize]
+    transformer: [capitalize],
   })
   name: string
 
@@ -25,23 +25,23 @@ export class User extends BaseEntity {
 
   @Column({
     transformer: [lowercase],
-    name: 'social_network_type'
+    name: 'social_network_type',
   })
   networkType: string
 
   @Column({
-    name: 'social_network_id'
+    name: 'social_network_id',
   })
   networkId: string
 
   @Column({
     type: 'simple-json',
-    nullable: true
+    nullable: true,
   })
   data: object | null
 
   @OneToMany(type => Notification, n => n.userId, {
-    onDelete: 'SET NULL'
+    onDelete: 'SET NULL',
   })
   notifications: Notification[]
 

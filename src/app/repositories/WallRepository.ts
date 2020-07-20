@@ -9,16 +9,18 @@ export class WallRepository {
   }
 
   getByIdWithMembers = async (id: number) =>
-    await this.repo.findOne({ where: { id }, relations: ['members'] })
+    this.repo.findOne({ where: { id }, relations: ['members'] })
 
-  getById = async (id: number) => await this.repo.findOne({ id })
+  getById = async (id: number) => this.repo.findOne({ id })
 
-  create = async (payload: any): Promise<Wall> => this.repo.create(payload as Wall)
+  create = async (payload: any): Promise<Wall> =>
+    this.repo.create(payload as Wall)
 
-  save = async (wall: Wall) => await this.repo.save(wall)
+  save = async (wall: Wall) => this.repo.save(wall)
 
   memberIsJoined = async (wallId: number, memberId: number) =>
-    await this.repo.createQueryBuilder('wall')
+    this.repo
+      .createQueryBuilder('wall')
       .leftJoinAndSelect('wall.members', 'member')
       .where('wall.id = :wallId', { wallId })
       .andWhere('member.id = :memberId', { memberId })
@@ -26,32 +28,31 @@ export class WallRepository {
       .getOne()
 
   join = async (wallId: number, memberId: number) =>
-    await this.repo.createQueryBuilder()
+    this.repo
+      .createQueryBuilder()
       .relation(Wall, 'members')
       .of(wallId)
       .add(memberId)
       .then(() => ({ wallId, memberId }))
       .catch(() => undefined)
 
-  unjoin = async (wallId: number, memberId: number) =>
-    await this.repo.createQueryBuilder()
+  leave = async (wallId: number, memberId: number) =>
+    this.repo
+      .createQueryBuilder()
       .relation(Wall, 'members')
       .of(wallId)
       .remove(memberId)
       .then(() => ({ wallId, memberId }))
       .catch(() => undefined)
 
-  list = async (query: {
-    page: number,
-    perPage: number,
-    userId: number,
-  }) => {
+  list = async (query: { page: number; perPage: number; userId: number }) => {
     const { perPage, page, userId } = query
-    const [rows, count] = await this.repo.createQueryBuilder('wall')
+    const [rows, count] = await this.repo
+      .createQueryBuilder('wall')
       .leftJoinAndSelect('wall.members', 'member')
       .where('member.id = :userId', { userId })
       .select(['wall.id', 'wall.name'])
-      .skip(((perPage * page) - perPage))
+      .skip(perPage * page - perPage)
       .take(perPage)
       .orderBy('wall.id', 'DESC')
       .getManyAndCount()
@@ -63,8 +64,10 @@ export class WallRepository {
     }
   }
 
-  get = async (id: number) => await this.repo.createQueryBuilder('wall')
-    .loadRelationCountAndMap('wall.members', 'wall.members')
-    .where('wall.id = :id', { id })
-    .getOne()
+  get = async (id: number) =>
+    this.repo
+      .createQueryBuilder('wall')
+      .loadRelationCountAndMap('wall.members', 'wall.members')
+      .where('wall.id = :id', { id })
+      .getOne()
 }

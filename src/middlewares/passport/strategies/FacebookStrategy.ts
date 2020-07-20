@@ -2,7 +2,7 @@ import dotenv from 'dotenv'
 import { Strategy, StrategyOption } from 'passport-facebook'
 dotenv.config()
 
-const strategyOptions: StrategyOption = { 
+const strategyOptions: StrategyOption = {
   clientID: process.env.FACEBOOK_APP_ID as string,
   clientSecret: process.env.FACEBOOK_SECRET as string,
   callbackURL: process.env.FACEBOOK_CALLBACK_URL as string,
@@ -18,5 +18,7 @@ const strategyOptions: StrategyOption = {
   ],
 }
 
-export const facebookStrategy = new Strategy(strategyOptions,
-  async (accessToken, refreshToken, profile, done) => done(null, profile))
+export const facebookStrategy = new Strategy(
+  strategyOptions,
+  async (accessToken, refreshToken, profile, done) => done(null, profile)
+)

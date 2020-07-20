@@ -11,24 +11,24 @@ export class PostService {
   constructor(
     private _postRepository: PostRepository,
     private _postMapper: PostMapper,
-    private _commentsService: CommentService,
+    private _commentsService: CommentService
   ) {}
 
   mapToEntity = async (postPayload: any): Promise<Post> =>
-    await this._postMapper.mapToEntity(postPayload)
+    this._postMapper.mapToEntity(postPayload)
 
   create = async (postEntity: Post): Promise<PostDTO> =>
-    await this._postRepository.save(postEntity)
+    this._postRepository
+      .save(postEntity)
       .then(post => this._postMapper.mapToDTO(post))
 
-  getById = async (id: number) =>
-    await this._postRepository.getById(id)
+  getById = async (id: number) => this._postRepository.getById(id)
 
   postOnWall = async (query: {
-    wallId: number,
-    page?: number,
-    perPage?: number,
-    userId?: number,
+    wallId: number
+    page?: number
+    perPage?: number
+    userId?: number
   }) => {
     const { page, perPage, wallId, userId } = query
     const list = await this._postRepository.postOnWall({
@@ -38,7 +38,10 @@ export class PostService {
     })
 
     if (!list.rows[0])
-      throw ErrorHandler.build(statusCodes.NOT_FOUND, PostMessages.POST_NOT_FOUND)
+      throw ErrorHandler.build(
+        statusCodes.NOT_FOUND,
+        PostMessages.POST_NOT_FOUND
+      )
 
     const output = {
       posts: [] as PostDTO[],
@@ -49,7 +52,7 @@ export class PostService {
     if (userId) {
       const likes = await this._postRepository.likesMany({
         userId,
-        postsIds: list.rows.map(post => post.id)
+        postsIds: list.rows.map(post => post.id),
       })
 
       output.posts = this._postMapper.mapListWithLikesToDTO(list.rows, likes)
@@ -60,11 +63,7 @@ export class PostService {
     return output
   }
 
-  list = async (query: {
-    userId: number,
-    page?: number,
-    perPage?: number,
-  }) => {
+  list = async (query: { userId: number; page?: number; perPage?: number }) => {
     const { page, perPage, userId } = query
     const list = await this._postRepository.list({
       page: page || config.PAGINATION.PAGE,
@@ -73,7 +72,10 @@ export class PostService {
     })
 
     if (!list.rows[0])
-      throw ErrorHandler.build(statusCodes.NOT_FOUND, PostMessages.POST_NOT_FOUND)
+      throw ErrorHandler.build(
+        statusCodes.NOT_FOUND,
+        PostMessages.POST_NOT_FOUND
+      )
 
     return {
       posts: this._postMapper.mapListToDTO(list.rows),
@@ -83,18 +85,24 @@ export class PostService {
   }
 
   get = async (postId: number, userId?: number) => {
-    const { comments, all, pages  } = await this._commentsService.commentOnPost({ postId })
-    let post = await this._postRepository.get(postId)
+    const { comments, all, pages } = await this._commentsService.commentOnPost({
+      postId,
+    })
+    let post = await this._postRepository
+      .get(postId)
       .then(post => this._postMapper.mapToDTO(post as Post))
 
     if (!post)
-      throw ErrorHandler.build(statusCodes.NOT_FOUND, PostMessages.POST_NOT_FOUND)
-    
+      throw ErrorHandler.build(
+        statusCodes.NOT_FOUND,
+        PostMessages.POST_NOT_FOUND
+      )
+
     if (userId) {
       const isLiked = await this._postRepository.isLiked(postId, userId)
-      if (isLiked) post = {...post, isLiked: true}
+      if (isLiked) post = { ...post, isLiked: true }
     }
-    
+
     return {
       ...post,
       comments: {
@@ -105,10 +113,7 @@ export class PostService {
     }
   }
 
-  relatedPosts = async (query: {
-    page?: number,
-    perPage?: number,
-  }) => {
+  relatedPosts = async (query: { page?: number; perPage?: number }) => {
     const { page, perPage } = query
     const list = await this._postRepository.relatedPosts({
       page: page || config.PAGINATION.PAGE,
@@ -116,7 +121,10 @@ export class PostService {
     })
 
     if (!list.rows[0])
-      throw ErrorHandler.build(statusCodes.NOT_FOUND, PostMessages.POST_NOT_FOUND)
+      throw ErrorHandler.build(
+        statusCodes.NOT_FOUND,
+        PostMessages.POST_NOT_FOUND
+      )
 
     return {
       posts: this._postMapper.mapListToDTO(list.rows),
@@ -126,12 +134,11 @@ export class PostService {
   }
 
   like = async (postId: number, userId: number) =>
-    await this._postRepository.like(postId, userId)
+    this._postRepository.like(postId, userId)
 
   unlike = async (postId: number, userId: number) =>
-    await this._postRepository.unlike(postId, userId)
+    this._postRepository.unlike(postId, userId)
 
   delete = async (postId: number, userId: number) =>
-    await this._postRepository.delete(postId, userId)
-      .then(() => ({ postId, userId }))
+    this._postRepository.delete(postId, userId).then(() => ({ postId, userId }))
 }

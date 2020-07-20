@@ -9,7 +9,7 @@ import { commentModule } from '../app/modules/CommentModule'
 import { notificationModule } from '../app/modules/NotificationModule'
 
 // Routes
-import { Paths } from '../app/routes/Paths'
+import { Endpoints } from '../app/routes/Endpoints'
 import { UserRoutes } from '../app/routes/UserRoutes'
 import { WallRoutes } from '../app/routes/WallRoutes'
 import { PostRoutes } from '../app/routes/PostRoutes'
@@ -23,10 +23,17 @@ export class Routes {
     Routes.router.use(moduleRoutes.domain, moduleRoutes.routes)
 
   static build = () => {
-    Routes.add(new UserRoutes(Paths.users.domain, userModule.controller))
-    Routes.add(new WallRoutes(Paths.walls.domain, wallModule.controller))
-    Routes.add(new PostRoutes(Paths.posts.domain, postModule.controller))
-    Routes.add(new CommentRoutes(Paths.comments.domain, commentModule.controller))
-    Routes.add(new NotificationRoutes(Paths.notifications.domain, notificationModule.controller))
+    Routes.add(new UserRoutes(Endpoints.users.domain, userModule.controller))
+    Routes.add(new WallRoutes(Endpoints.walls.domain, wallModule.controller))
+    Routes.add(new PostRoutes(Endpoints.posts.domain, postModule.controller))
+    Routes.add(
+      new CommentRoutes(Endpoints.comments.domain, commentModule.controller)
+    )
+    Routes.add(
+      new NotificationRoutes(
+        Endpoints.notifications.domain,
+        notificationModule.controller
+      )
+    )
   }
 }

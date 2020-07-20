@@ -4,11 +4,9 @@ import { Response, RequestHandler, Request } from 'express'
 import { WallController } from '../controllers/WallController'
 import { validators } from '../utils/validators/WallValidators'
 import { ensureAuth, publicAuth } from '../../middlewares/AuthenticationMiddle'
-import { Paths } from './Paths'
-
+import { Endpoints } from './Endpoints'
 
 export class WallRoutes extends BaseRoutes {
-
   constructor(modulePath: string, private _wallController: WallController) {
     super(modulePath)
     this.addRoutes()
@@ -16,53 +14,58 @@ export class WallRoutes extends BaseRoutes {
 
   addRoutes() {
     // Public
-    this.api.get(Paths.walls.get, publicAuth, this.get)
+    this.api.get(Endpoints.walls.get, publicAuth, this.get)
 
     // Private
     this.api.use(ensureAuth)
-    this.api.post(Paths.walls.create, validators.create, this.create)
-    this.api.post(Paths.walls.unjoin, validators.unjoin, this.unjoin)
-    this.api.post(Paths.walls.join, validators.unjoin, this.join)
-    this.api.get(Paths.walls.list, this.list)
+    this.api.post(Endpoints.walls.create, validators.create, this.create)
+    this.api.post(Endpoints.walls.leave, validators.leave, this.leave)
+    this.api.post(Endpoints.walls.join, validators.leave, this.join)
+    this.api.get(Endpoints.walls.list, this.list)
   }
 
-  public create: RequestHandler = (req: Request, res: Response) =>
+  create: RequestHandler = (req: Request, res: Response) =>
     RouteMethod.build({
-      resolve: async () => {
-        const wall = await this._wallController.create({
-          name: req.body.name,
-          creatorId: req.userLogged?.id,
-        })
-        if (wall)
-          return res
-            .status(statusCodes.CREATE)
-            .send(ResponseHandler.build(wall, false))
-      }, req, res
+      resolve: async () =>
+        this._wallController
+          .create({
+            name: req.body.name,
+            creatorId: req.userLogged?.id,
+          })
+          .then(wall =>
+            res
+              .status(statusCodes.CREATE)
+              .send(ResponseHandler.build(wall, false))
+          ),
+      req,
+      res,
     })
 
-  public unjoin: RequestHandler = (req: Request, res: Response) =>
+  leave: RequestHandler = (req: Request, res: Response) =>
     RouteMethod.build({
-      resolve: async () => {
-        const wall = await this._wallController.unjoin(parseInt(req.params.wallId), req.userLogged?.id)
-        if (wall)
-          return res
-            .status(statusCodes.OK)
-            .send(ResponseHandler.build(wall, false))
-      }, req, res
+      resolve: async () =>
+        this._wallController
+          .leave(parseInt(req.params.wallId), req.userLogged?.id)
+          .then(wall =>
+            res.status(statusCodes.OK).send(ResponseHandler.build(wall, false))
+          ),
+      req,
+      res,
     })
 
-  public join: RequestHandler = (req: Request, res: Response) =>
+  join: RequestHandler = (req: Request, res: Response) =>
     RouteMethod.build({
-      resolve: async () => {
-        const wall = await this._wallController.join(parseInt(req.params.wallId), req.userLogged?.id)
-        if (wall)
-          return res
-            .status(statusCodes.OK)
-            .send(ResponseHandler.build(wall, false))
-      }, req, res
+      resolve: async () =>
+        this._wallController
+          .join(parseInt(req.params.wallId), req.userLogged?.id)
+          .then(wall =>
+            res.status(statusCodes.OK).send(ResponseHandler.build(wall, false))
+          ),
+      req,
+      res,
     })
 
-  public list: RequestHandler = (req: Request, res: Response) =>
+  list: RequestHandler = (req: Request, res: Response) =>
     RouteMethod.build({
       resolve: async () => {
         const { page, perPage } = req.query
@@ -75,17 +78,20 @@ export class WallRoutes extends BaseRoutes {
           return res
             .status(statusCodes.OK)
             .send(ResponseHandler.build(list, false))
-      }, req, res
+      },
+      req,
+      res,
     })
 
-  public get: RequestHandler = (req: Request, res: Response) =>
+  get: RequestHandler = (req: Request, res: Response) =>
     RouteMethod.build({
-      resolve: async () => {
-        const wall = await this._wallController.get(parseInt(req.params.wallId), req.userLogged?.id)
-        if (wall)
-          return res
-            .status(statusCodes.OK)
-            .send(ResponseHandler.build(wall, false))
-      }, req, res
+      resolve: async () =>
+        this._wallController
+          .get(parseInt(req.params.wallId), req.userLogged?.id)
+          .then(wall =>
+            res.status(statusCodes.OK).send(ResponseHandler.build(wall, false))
+          ),
+      req,
+      res,
     })
 }

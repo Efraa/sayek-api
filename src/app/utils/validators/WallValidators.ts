@@ -4,19 +4,18 @@ import { WallMessages } from '../messages/WallMessages'
 const { VALIDATOR } = WallMessages
 
 const create = [
-  check('name', VALIDATOR.NAME)
-    .isLength({
-      min: 2
-    })
+  check('name', VALIDATOR.NAME).isLength({
+    min: 2,
+  }),
 ]
 
-const unjoin = [
+const leave = [
   param('wallId', VALIDATOR.ID)
     .isLength({
-      min: 1
+      min: 1,
     })
     .toInt()
-    .isInt()
+    .isInt(),
 ]
 
-export const validators = { create, unjoin }
+export const validators = { create, leave }

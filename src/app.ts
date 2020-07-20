@@ -1,7 +1,12 @@
 import 'reflect-metadata'
 import { config } from './config'
 import { DatabaseConnection } from './database/DatabaseConnection'
-import { cors, security, sanitizeData, securityHeaders } from './helpers/appSecurity'
+import {
+  cors,
+  security,
+  sanitizeData,
+  securityHeaders,
+} from './helpers/appSecurity'
 import express, { Application } from 'express'
 import compression from 'compression'
 import { passport } from './middlewares/passport'
@@ -27,10 +32,10 @@ app.get('/', (req, res) => res.redirect(config.AGENT_CLIENT as string))
 
 const initializeApplication = async () => {
   try {
-    await DatabaseConnection.connect()
-      .then(({ options: { database } }) =>
-        console.info(`Connected to ${database} database`))
-    
+    await DatabaseConnection.connect().then(({ options: { database } }) =>
+      console.info(`Connected to ${database} database`)
+    )
+
     Routes.build()
     app.use(config.SERVER.PREFIX_ROUTES, Routes.router)
   } catch (e) {

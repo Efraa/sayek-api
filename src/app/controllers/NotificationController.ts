@@ -4,18 +4,14 @@ import { SocketServer } from '../../socket/SocketServer'
 export class NotificationController {
   constructor(
     private _notificationService: NotificationService,
-    private _socket: SocketServer,
+    private _socket: SocketServer
   ) {}
 
   async create(payload: any) {
     return payload
   }
 
-  async list(query: {
-    userId: number,
-    perPage?: number,
-    page?: number,
-  }) {}
+  async list(query: { userId: number; perPage?: number; page?: number }) {}
 
   async count(userId: number) {}
 

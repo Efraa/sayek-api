@@ -10,7 +10,7 @@ const users = {
 const walls = {
   domain: '/walls',
   create: '/',
-  unjoin: '/unjoin/:wallId',
+  leave: '/leave/:wallId',
   join: '/join/:wallId',
   list: '/list',
   get: '/:wallId',
@@ -38,7 +38,7 @@ const notifications = {
   domain: '/notifications',
 }
 
-export const Paths = {
+export const Endpoints = {
   users,
   walls,
   posts,

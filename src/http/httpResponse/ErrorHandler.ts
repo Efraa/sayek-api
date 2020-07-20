@@ -9,5 +9,5 @@ const build = (statusCode: number, message: string | string[]) => {
 }
 
 export const ErrorHandler = {
-  build
+  build,
 }
