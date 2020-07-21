@@ -8,7 +8,7 @@ export class SocketServer {
   constructor(server: Server) {
     this.socketIO = socketIO(server)
     this.socketIO.on(Events.CONNECTION, (client: SocketIO.Server) =>
-      console.log('Client connected')
+      console.log('Client connected', client)
     )
   }
 }

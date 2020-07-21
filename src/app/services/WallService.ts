@@ -58,7 +58,10 @@ export class WallService {
   }
 
   get = async (wallId: number, userId?: number) => {
-    const { posts, all, pages } = await this._postService.postOnWall({ wallId, userId })
+    const { posts, all, pages } = await this._postService.postOnWall({
+      wallId,
+      userId,
+    })
     const wall = await this._wallRepository
       .get(wallId)
       .then(wall => this._wallMapper.mapToDTO(wall as Wall))

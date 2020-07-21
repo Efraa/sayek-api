@@ -11,7 +11,7 @@ export class NotificationDTO {
   body?: string
 
   @MapProp()
-  data?: object | null
+  data?: any | null
 
   @MapProp()
   read?: boolean

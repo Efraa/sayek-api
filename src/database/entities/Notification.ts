@@ -19,7 +19,7 @@ export class Notification extends BaseEntity {
     type: 'simple-json',
     nullable: true,
   })
-  data?: object | null
+  data?: any | null
 
   @Column({
     default: false,

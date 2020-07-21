@@ -1,4 +1,4 @@
-import { Entity, Column, Index, OneToMany, BeforeInsert } from 'typeorm'
+import { Entity, Column, Index, OneToMany } from 'typeorm'
 import { BaseEntity } from '../BaseEntity'
 import { lowercase, encode, capitalize } from '../transformers'
 import { Notification } from '../entities/Notification'
@@ -38,7 +38,7 @@ export class User extends BaseEntity {
     type: 'simple-json',
     nullable: true,
   })
-  data: object | null
+  data: any | null
 
   @OneToMany(type => Notification, n => n.userId, {
     onDelete: 'SET NULL',

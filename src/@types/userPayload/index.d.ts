@@ -3,5 +3,5 @@ declare interface UserPayload {
   email?: string
   networkType: string
   networkId: string
-  data: object | null
+  data: any | null
 }
