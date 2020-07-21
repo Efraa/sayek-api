@@ -3,7 +3,7 @@ import { ResponseHandler, RouteMethod, statusCodes } from '../../http'
 import { Response, RequestHandler, Request } from 'express'
 import { CommentController } from '../controllers/CommentController'
 import { validators } from '../utils/validators/CommentValidators'
-import { ensureAuth } from '../../middlewares/AuthenticationMiddle'
+import { isAuthorized } from '../../middlewares/AuthorizedMiddle'
 import { Endpoints } from './Endpoints'
 
 export class CommentRoutes extends BaseRoutes {
@@ -19,7 +19,7 @@ export class CommentRoutes extends BaseRoutes {
     // Public
     this.api.get(Endpoints.comments.list, validators.list, this.commentOnPost)
 
-    this.api.use(ensureAuth)
+    this.api.use(isAuthorized)
     this.api.post(Endpoints.comments.create, validators.create, this.create)
     this.api.delete(Endpoints.comments.delete, validators.deleted, this.delete)
   }

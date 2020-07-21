@@ -12,7 +12,7 @@ import { Endpoints } from './Endpoints'
 import { AuthToken } from '../../helpers'
 import { UserMessages } from '../utils/messages/UserMessages'
 import { validators } from '../utils/validators/UserValidators'
-import { ensureAuth } from '../../middlewares/AuthenticationMiddle'
+import { isAuthorized } from '../../middlewares/AuthorizedMiddle'
 
 export class UserRoutes extends BaseRoutes {
   constructor(modulePath: string, private _userController: UserController) {
@@ -35,7 +35,7 @@ export class UserRoutes extends BaseRoutes {
     )
     this.api.post(Endpoints.users.refreshToken, this.refreshToken)
 
-    this.api.use(ensureAuth)
+    this.api.use(isAuthorized)
     this.api.post(Endpoints.users.logout, this.logout)
     this.api.put(
       Endpoints.users.editUsername,

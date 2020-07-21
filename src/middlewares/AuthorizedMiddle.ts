@@ -4,7 +4,7 @@ import { AuthToken } from '../helpers/AuthToken'
 import { Logger } from '../helpers/logging/Logger'
 import { UserMessages } from '../app/utils/messages/UserMessages'
 
-export const ensureAuth = async (
+export const isAuthorized = async (
   req: Request,
   res: Response,
   next: NextFunction
@@ -28,13 +28,11 @@ export const ensureAuth = async (
     Logger.error(`[TOKEN ERROR]: ${e.name}, ${e.message}`)
     return res
       .status(statusCodes.UNAUTHORIZED)
-      .send(
-        ResponseHandler.build('An error occurred with the token verification.')
-      )
+      .send(ResponseHandler.build(UserMessages.TOKEN_VERIFY_ERROR))
   }
 }
 
-export const publicAuth = async (
+export const isLogged = async (
   req: Request,
   res: Response,
   next: NextFunction
@@ -51,8 +49,6 @@ export const publicAuth = async (
     Logger.error(`[TOKEN ERROR]: ${e.name}, ${e.message}`)
     return res
       .status(statusCodes.UNAUTHORIZED)
-      .send(
-        ResponseHandler.build('An error occurred with the token verification.')
-      )
+      .send(ResponseHandler.build(UserMessages.TOKEN_VERIFY_ERROR))
   }
 }

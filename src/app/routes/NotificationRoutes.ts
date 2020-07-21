@@ -3,7 +3,7 @@ import { ResponseHandler, RouteMethod, statusCodes } from '../../http'
 import { Response, RequestHandler, Request } from 'express'
 import { NotificationController } from '../controllers/NotificationController'
 import { validators } from '../utils/validators/NotificationValidators'
-import { ensureAuth } from '../../middlewares/AuthenticationMiddle'
+import { isAuthorized } from '../../middlewares/AuthorizedMiddle'
 import { Endpoints } from './Endpoints'
 
 export class NotificationRoutes extends BaseRoutes {
@@ -16,7 +16,7 @@ export class NotificationRoutes extends BaseRoutes {
   }
 
   addRoutes() {
-    this.api.use(ensureAuth)
-    // this.api.post(Endpoints.notifications.create, [ensureAuth, ...validators.create], this.create)
+    this.api.use(isAuthorized)
+    // this.api.post(Endpoints.notifications.create, [isAuthorized, ...validators.create], this.create)
   }
 }
