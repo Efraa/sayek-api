@@ -10,7 +10,7 @@
 
 * **STATUS:** _Development_ ✔️ | Production | Staging | Deprecated
 * **Started by:** [Efra Peralta](https://github.com/Efraa)
-* **Local URL:** [http://127.0.0.1:1111](http://127.0.0.1:1111)
+* **Local URL:** [localhost:2310/api/](localhost:2310/api/)
 * **Prod URL:** [https://sayek.herokuapp.com/](https://sayek.herokuapp.com/)
 * **Prod Version:** v0.0.0
 

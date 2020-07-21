@@ -37,26 +37,20 @@ export class PostService {
       wallId,
     })
 
-    if (!list.rows[0])
-      throw ErrorHandler.build(
-        statusCodes.NOT_FOUND,
-        PostMessages.POST_NOT_FOUND
-      )
-
     const output = {
       posts: [] as PostDTO[],
       all: list.all,
       pages: list.pages,
     }
 
-    if (userId) {
+    if (userId && list.rows[0]) {
       const likes = await this._postRepository.likesMany({
         userId,
         postsIds: list.rows.map(post => post.id),
       })
 
       output.posts = this._postMapper.mapListWithLikesToDTO(list.rows, likes)
-    } else {
+    } else if (list.rows[0]) {
       output.posts = this._postMapper.mapListToDTO(list.rows)
     }
 
