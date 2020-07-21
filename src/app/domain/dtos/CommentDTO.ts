@@ -8,5 +8,5 @@ export class CommentDTO {
   content: string
 
   @MapProp()
-  user: {}
+  user: any
 }

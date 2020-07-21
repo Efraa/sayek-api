@@ -30,7 +30,7 @@ export class UserService {
       .getBySocialNetwork(query)
       .then(user => (user ? this._userMapper.mapToDTO(user) : undefined))
 
-  getById = async (id: number, map: boolean = true) =>
+  getById = async (id: number, map = true) =>
     this._userRepository
       .getById(id)
       .then(user => (map ? this._userMapper.mapToDTO(user as User) : user))

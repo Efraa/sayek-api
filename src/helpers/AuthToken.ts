@@ -1,6 +1,6 @@
 import { Response } from 'express'
 import { Secret, verify, sign } from 'jsonwebtoken'
-import { Endpoints } from '../app/routes/Endpoints'
+// import { Endpoints } from '../app/routes/Endpoints'
 import { UserDTO } from '../app/domain/dtos/UserDTO'
 
 export const AuthToken = {
