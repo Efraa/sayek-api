@@ -28,9 +28,8 @@ export class UserController {
     }
 
     const { data } = await AuthToken.verifyRandomToken(state)
-
     return {
-      callbackURI: clientURI('', data.query),
+      callbackURI: clientURI(data.query?.continue),
       token: await AuthToken.generateRefreshToken(user),
     }
   }
