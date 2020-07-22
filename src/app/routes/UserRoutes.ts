@@ -93,7 +93,7 @@ export class UserRoutes extends BaseRoutes {
             UserMessages.NOT_LOGGUED
           )
 
-        AuthToken.sendRefreshToken(res, '')
+        AuthToken.destroyRefreshToken(res)
         return res
           .status(statusCodes.OK)
           .send(ResponseHandler.build(UserMessages.UNLOGGED))

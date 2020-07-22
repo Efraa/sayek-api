@@ -33,10 +33,13 @@ export const AuthToken = {
     expires.setHours(
       parseInt(process.env.JWT_REFRESH_TOKEN_EXPIRE?.split('h')[0] as string)
     )
+
     return res.cookie('_cxtk', token, {
       httpOnly: true,
       expires,
       // path: Endpoints.users.refreshToken,
     })
   },
+
+  destroyRefreshToken: (res: Response) => res.clearCookie('_cxtk'),
 }
