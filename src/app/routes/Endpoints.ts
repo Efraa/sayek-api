@@ -13,7 +13,7 @@ const walls = {
   leave: '/leave/:wallId',
   join: '/join/:wallId',
   list: '/list',
-  get: '/:wallId',
+  get: '/get/:wallId',
 }
 
 const posts = {
@@ -21,7 +21,7 @@ const posts = {
   create: '/:wallId',
   list: '/list',
   delete: '/:postId',
-  get: '/:postId',
+  get: '/get/:postId',
   relatedPosts: '/related-posts',
   like: '/like/:postId',
   unlike: '/unlike/:postId',

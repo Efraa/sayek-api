@@ -11,6 +11,7 @@ const corsOptions: c.CorsOptions = {
     'Origin',
     'X-Requested-With',
     'Accept',
+    'x-xsrf-token',
   ],
   methods: ['POST', 'GET', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'],
   credentials: true,
