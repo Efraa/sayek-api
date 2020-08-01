@@ -16,7 +16,7 @@ export class PostController {
       .mapToEntity({
         ...wallPayload,
         content: sanitizeHtml(wallPayload.content, {
-          allowedTags: ['a'],
+          allowedTags: ['a', 'b', 'i', 'br'],
           allowedAttributes: {
             a: ['href'],
           },
