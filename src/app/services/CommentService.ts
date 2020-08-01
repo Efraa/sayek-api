@@ -26,16 +26,19 @@ export class CommentService {
     perPage?: number
   }) => {
     const { page, perPage, postId } = query
-    const list = await this._commentRepository.commentOnPost({
+    const options = {
       page: page || config.PAGINATION.PAGE,
       perPage: perPage || config.PAGINATION.COMMENTS_POSTS_PER_PAGE,
       postId,
-    })
+    }
+    const list = await this._commentRepository.commentOnPost(options)
 
     return {
       comments: this._commentMapper.mapListToDTO(list.rows),
       all: list.all,
       pages: list.pages,
+      nextPage:
+        options.page >= list.pages ? false : parseInt(options.page as any) + 1,
     }
   }
 

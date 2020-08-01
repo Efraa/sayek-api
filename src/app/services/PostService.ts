@@ -31,16 +31,19 @@ export class PostService {
     userId?: number
   }) => {
     const { page, perPage, wallId, userId } = query
-    const list = await this._postRepository.postOnWall({
+    const options = {
       page: page || config.PAGINATION.PAGE,
       perPage: perPage || config.PAGINATION.PER_PAGE,
       wallId,
-    })
+    }
+    const list = await this._postRepository.postOnWall(options)
 
     const output = {
       posts: [] as PostDTO[],
       all: list.all,
       pages: list.pages,
+      nextPage:
+        options.page >= list.pages ? false : parseInt(options.page as any) + 1,
     }
 
     if (userId && list.rows[0]) {
@@ -59,11 +62,12 @@ export class PostService {
 
   list = async (query: { userId: number; page?: number; perPage?: number }) => {
     const { page, perPage, userId } = query
-    const list = await this._postRepository.list({
+    const options = {
       page: page || config.PAGINATION.PAGE,
       perPage: perPage || config.PAGINATION.POST_PER_PAGE,
       userId,
-    })
+    }
+    const list = await this._postRepository.list(options)
 
     if (!list.rows[0])
       throw ErrorHandler.build(
@@ -75,6 +79,8 @@ export class PostService {
       posts: this._postMapper.mapListToDTO(list.rows),
       all: list.all,
       pages: list.pages,
+      nextPage:
+        options.page >= list.pages ? false : parseInt(options.page as any) + 1,
     }
   }
 

@@ -38,11 +38,12 @@ export class WallService {
 
   list = async (query: { userId: number; page?: number; perPage?: number }) => {
     const { page, perPage, userId } = query
-    const list = await this._wallRepository.list({
+    const options = {
       page: page || config.PAGINATION.PAGE,
       perPage: perPage || config.PAGINATION.PER_PAGE,
       userId,
-    })
+    }
+    const list = await this._wallRepository.list(options)
 
     if (!list.rows[0])
       throw ErrorHandler.build(
@@ -54,6 +55,8 @@ export class WallService {
       walls: this._wallMapper.mapListToDTO(list.rows),
       all: list.all,
       pages: list.pages,
+      nextPage:
+        options.page >= list.pages ? false : parseInt(options.page as any) + 1,
     }
   }
 
