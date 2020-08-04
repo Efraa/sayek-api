@@ -16,10 +16,8 @@ export class PostController {
       .mapToEntity({
         ...wallPayload,
         content: sanitizeHtml(wallPayload.content, {
-          allowedTags: ['a', 'b', 'i', 'br'],
-          allowedAttributes: {
-            a: ['href'],
-          },
+          allowedTags: ['b', 'i', 'br', 'div'],
+          allowedAttributes: false,
         }),
       })
       .then(async post => this._postService.create(post))
