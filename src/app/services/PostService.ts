@@ -43,7 +43,9 @@ export class PostService {
       all: collections.all,
       pages: collections.pages,
       nextPage:
-        options.page >= collections.pages ? false : parseInt(options.page as any) + 1,
+        options.page >= collections.pages
+          ? false
+          : parseInt(options.page as any) + 1,
     }
 
     if (userId && collections.rows[0]) {
@@ -52,7 +54,10 @@ export class PostService {
         postsIds: collections.rows.map(post => post.id),
       })
 
-      output.posts = this._postMapper.mapListWithLikesToDTO(collections.rows, likes)
+      output.posts = this._postMapper.mapListWithLikesToDTO(
+        collections.rows,
+        likes
+      )
     } else if (collections.rows[0]) {
       output.posts = this._postMapper.mapListToDTO(collections.rows)
     }
@@ -60,7 +65,11 @@ export class PostService {
     return output
   }
 
-  collections = async (query: { userId: number; page?: number; perPage?: number }) => {
+  collections = async (query: {
+    userId: number
+    page?: number
+    perPage?: number
+  }) => {
     const { page, perPage, userId } = query
     const options = {
       page: page || config.PAGINATION.PAGE,
@@ -80,7 +89,9 @@ export class PostService {
       all: collections.all,
       pages: collections.pages,
       nextPage:
-        options.page >= collections.pages ? false : parseInt(options.page as any) + 1,
+        options.page >= collections.pages
+          ? false
+          : parseInt(options.page as any) + 1,
     }
   }
 
