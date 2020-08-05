@@ -13,15 +13,26 @@ export class WallRoutes extends BaseRoutes {
   }
 
   addRoutes() {
+    // Private
+    this.api.post(
+      Endpoints.walls.create,
+      [isAuthorized, ...validators.create],
+      this.create
+    )
+    this.api.get(Endpoints.walls.collections, isAuthorized, this.collections)
+    this.api.post(
+      Endpoints.walls.leave,
+      [isAuthorized, ...validators.leave],
+      this.leave
+    )
+    this.api.post(
+      Endpoints.walls.join,
+      [isAuthorized, ...validators.leave],
+      this.join
+    )
+
     // Public
     this.api.get(Endpoints.walls.get, isLogged, this.get)
-
-    // Private
-    this.api.use(isAuthorized)
-    this.api.post(Endpoints.walls.create, validators.create, this.create)
-    this.api.post(Endpoints.walls.leave, validators.leave, this.leave)
-    this.api.post(Endpoints.walls.join, validators.leave, this.join)
-    this.api.get(Endpoints.walls.list, this.list)
   }
 
   create: RequestHandler = (req: Request, res: Response) =>
@@ -65,19 +76,19 @@ export class WallRoutes extends BaseRoutes {
       res,
     })
 
-  list: RequestHandler = (req: Request, res: Response) =>
+  collections: RequestHandler = (req: Request, res: Response) =>
     RouteMethod.build({
       resolve: async () => {
         const { page, perPage } = req.query
-        const list = await this._wallController.list({
+        const collections = await this._wallController.collections({
           userId: req.userLogged?.id,
           page: page as any,
           perPage: perPage as any,
         })
-        if (list)
+        if (collections)
           return res
             .status(statusCodes.OK)
-            .send(ResponseHandler.build(list, false))
+            .send(ResponseHandler.build(collections, false))
       },
       req,
       res,

@@ -17,13 +17,18 @@ export class PostController {
         ...wallPayload,
         content: sanitizeHtml(wallPayload.content, {
           allowedTags: ['b', 'i', 'br', 'div'],
-          allowedAttributes: false,
+          allowedAttributes: {
+            a: ['href'],
+          },
         }),
       })
       .then(async post => this._postService.create(post))
 
-  list = async (query: { page?: number; perPage?: number; userId: number }) =>
-    this._postService.list(query)
+  collections = async (query: {
+    page?: number
+    perPage?: number
+    userId: number
+  }) => this._postService.collections(query)
 
   relatedPosts = async (query: { page?: number; perPage?: number }) =>
     this._postService.relatedPosts(query)

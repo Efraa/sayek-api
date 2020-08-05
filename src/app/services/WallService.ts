@@ -36,27 +36,33 @@ export class WallService {
   memberIsJoined = async (wallId: number, memberId: number) =>
     this._wallRepository.memberIsJoined(wallId, memberId)
 
-  list = async (query: { userId: number; page?: number; perPage?: number }) => {
+  collections = async (query: {
+    userId: number
+    page?: number
+    perPage?: number
+  }) => {
     const { page, perPage, userId } = query
     const options = {
       page: page || config.PAGINATION.PAGE,
       perPage: perPage || config.PAGINATION.PER_PAGE,
       userId,
     }
-    const list = await this._wallRepository.list(options)
+    const collections = await this._wallRepository.collections(options)
 
-    if (!list.rows[0])
+    if (!collections.rows[0])
       throw ErrorHandler.build(
         statusCodes.NOT_FOUND,
         WallMessages.WALL_NOT_FOUND
       )
 
     return {
-      walls: this._wallMapper.mapListToDTO(list.rows),
-      all: list.all,
-      pages: list.pages,
+      walls: this._wallMapper.mapListToDTO(collections.rows),
+      all: collections.all,
+      pages: collections.pages,
       nextPage:
-        options.page >= list.pages ? false : parseInt(options.page as any) + 1,
+        options.page >= collections.pages
+          ? false
+          : parseInt(options.page as any) + 1,
     }
   }
 

@@ -1,5 +1,5 @@
 const users = {
-  domain: '/users',
+  resource: '/users',
   authFacebook: '/auth/facebook',
   authGoogle: '/auth/google',
   refreshToken: '/refresh-token',
@@ -8,34 +8,34 @@ const users = {
 }
 
 const walls = {
-  domain: '/walls',
+  resource: '/walls',
   create: '/',
-  leave: '/leave/:wallId',
-  join: '/join/:wallId',
-  list: '/list',
-  get: '/get/:wallId',
+  collections: '/',
+  leave: '/:wallId/leave',
+  join: '/:wallId/join',
+  get: '/:wallId',
 }
 
 const posts = {
-  domain: '/posts',
+  resource: '/posts',
+  collections: '/',
+  like: '/:postId/like',
+  unlike: '/:postId/unlike',
   create: '/:wallId',
-  list: '/list',
   delete: '/:postId',
-  get: '/get/:postId',
   relatedPosts: '/related-posts',
-  like: '/like/:postId',
-  unlike: '/unlike/:postId',
+  get: '/:postId',
 }
 
 const comments = {
-  domain: '/comments',
+  resource: '/comments',
   create: '/:postId',
-  list: '/list/:postId',
+  collections: '/:postId',
   delete: '/:commentId',
 }
 
 const notifications = {
-  domain: '/notifications',
+  resource: '/notifications',
 }
 
 export const Endpoints = {

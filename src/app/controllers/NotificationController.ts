@@ -11,7 +11,11 @@ export class NotificationController {
     return payload
   }
 
-  async list(query: { userId: number; perPage?: number; page?: number }) {}
+  async collections(query: {
+    userId: number
+    perPage?: number
+    page?: number
+  }) {}
 
   async count(userId: number) {}
 

@@ -13,17 +13,32 @@ export class PostRoutes extends BaseRoutes {
   }
 
   addRoutes() {
+    // Private
+    this.api.get(Endpoints.posts.collections, isAuthorized, this.collections)
+    this.api.post(
+      Endpoints.posts.like,
+      [isAuthorized, ...validators.like],
+      this.like
+    )
+    this.api.post(
+      Endpoints.posts.unlike,
+      [isAuthorized, ...validators.like],
+      this.unlike
+    )
+    this.api.post(
+      Endpoints.posts.create,
+      [isAuthorized, ...validators.create],
+      this.create
+    )
+    this.api.delete(
+      Endpoints.posts.delete,
+      [isAuthorized, ...validators.deleted],
+      this.delete
+    )
+
     // Public
     this.api.get(Endpoints.posts.relatedPosts, isLogged, this.relatedPosts)
     this.api.get(Endpoints.posts.get, isLogged, this.get)
-
-    // Private
-    this.api.use(isAuthorized)
-    this.api.post(Endpoints.posts.create, validators.create, this.create)
-    this.api.get(Endpoints.posts.list, this.list)
-    this.api.post(Endpoints.posts.like, validators.like, this.like)
-    this.api.post(Endpoints.posts.unlike, validators.like, this.unlike)
-    this.api.delete(Endpoints.posts.delete, validators.deleted, this.delete)
   }
 
   create: RequestHandler = (req: Request, res: Response) =>
@@ -45,19 +60,19 @@ export class PostRoutes extends BaseRoutes {
       res,
     })
 
-  list: RequestHandler = (req: Request, res: Response) =>
+  collections: RequestHandler = (req: Request, res: Response) =>
     RouteMethod.build({
       resolve: async () => {
         const { page, perPage } = req.query
-        const list = await this._postController.list({
+        const collections = await this._postController.collections({
           userId: req.userLogged?.id,
           page: page as any,
           perPage: perPage as any,
         })
-        if (list)
+        if (collections)
           return res
             .status(statusCodes.OK)
-            .send(ResponseHandler.build(list, false))
+            .send(ResponseHandler.build(collections, false))
       },
       req,
       res,

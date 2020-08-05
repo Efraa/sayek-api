@@ -23,15 +23,15 @@ export class Routes {
     Routes.router.use(moduleRoutes.domain, moduleRoutes.routes)
 
   static build = () => {
-    Routes.add(new UserRoutes(Endpoints.users.domain, userModule.controller))
-    Routes.add(new WallRoutes(Endpoints.walls.domain, wallModule.controller))
-    Routes.add(new PostRoutes(Endpoints.posts.domain, postModule.controller))
+    Routes.add(new UserRoutes(Endpoints.users.resource, userModule.controller))
+    Routes.add(new WallRoutes(Endpoints.walls.resource, wallModule.controller))
+    Routes.add(new PostRoutes(Endpoints.posts.resource, postModule.controller))
     Routes.add(
-      new CommentRoutes(Endpoints.comments.domain, commentModule.controller)
+      new CommentRoutes(Endpoints.comments.resource, commentModule.controller)
     )
     Routes.add(
       new NotificationRoutes(
-        Endpoints.notifications.domain,
+        Endpoints.notifications.resource,
         notificationModule.controller
       )
     )

@@ -45,7 +45,11 @@ export class WallRepository {
       .then(() => ({ wallId, memberId }))
       .catch(() => undefined)
 
-  list = async (query: { page: number; perPage: number; userId: number }) => {
+  collections = async (query: {
+    page: number
+    perPage: number
+    userId: number
+  }) => {
     const { perPage, page, userId } = query
     const [rows, count] = await this.repo
       .createQueryBuilder('wall')

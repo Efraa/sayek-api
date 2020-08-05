@@ -22,7 +22,11 @@ export class NotificationService {
 
   async send(payload: NotificationDTO) {}
 
-  async list(query: { userId: number; perPage?: number; page?: number }) {}
+  async collections(query: {
+    userId: number
+    perPage?: number
+    page?: number
+  }) {}
 
   async count(userId: number): Promise<NotificationDTO[]> {
     return []
