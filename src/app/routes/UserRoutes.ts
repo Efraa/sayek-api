@@ -37,11 +37,7 @@ export class UserRoutes extends BaseRoutes {
 
     this.api.use(isAuthorized)
     this.api.post(Endpoints.users.logout, this.logout)
-    this.api.put(
-      Endpoints.users.editUsername,
-      validators.edit,
-      this.editUsername
-    )
+    this.api.put(Endpoints.users.update, validators.edit, this.editUsername)
   }
 
   authCallback: RequestHandler = (req: Request, res: Response) =>

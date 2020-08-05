@@ -1,37 +1,34 @@
 const users = {
   resource: '/users',
+  update: '/',
   authFacebook: '/auth/facebook',
   authGoogle: '/auth/google',
   refreshToken: '/refresh-token',
   logout: '/logout',
-  editUsername: '/edit-username',
 }
 
 const walls = {
   resource: '/walls',
   create: '/',
   collections: '/',
-  leave: '/:wallId/leave',
   join: '/:wallId/join',
-  get: '/:wallId',
+  document: '/:wallId',
 }
 
 const posts = {
   resource: '/posts',
   collections: '/',
   like: '/:postId/like',
-  unlike: '/:postId/unlike',
   create: '/:wallId',
-  delete: '/:postId',
   relatedPosts: '/related-posts',
-  get: '/:postId',
+  document: '/:postId',
 }
 
 const comments = {
   resource: '/comments',
   create: '/:postId',
   collections: '/:postId',
-  delete: '/:commentId',
+  document: '/:commentId',
 }
 
 const notifications = {

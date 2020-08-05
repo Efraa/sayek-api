@@ -1,6 +1,6 @@
 import { PostService } from '../services/PostService'
 import { ErrorHandler, statusCodes } from '../../http'
-import sanitizeHtml from 'sanitize-html'
+import { sanitizeData } from '../../helpers/appSecurity'
 import { PostMessages } from '../utils/messages/PostMessages'
 
 export class PostController {
@@ -15,12 +15,7 @@ export class PostController {
     this._postService
       .mapToEntity({
         ...wallPayload,
-        content: sanitizeHtml(wallPayload.content, {
-          allowedTags: ['b', 'i', 'br', 'div'],
-          allowedAttributes: {
-            a: ['href'],
-          },
-        }),
+        content: sanitizeData(wallPayload.content),
       })
       .then(async post => this._postService.create(post))
 

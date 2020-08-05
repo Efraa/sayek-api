@@ -59,8 +59,7 @@
     "ts-simple-automapper": "^1.0.2",
     "typeorm": "^0.2.24",
     "winston": "^3.2.1",
-    "winston-slack-webhook-transport": "^1.2.1",
-    "xss-clean": "^0.1.1"
+    "winston-slack-webhook-transport": "^1.2.1"
   },
   "repository": {
     "type": "git",

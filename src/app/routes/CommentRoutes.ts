@@ -16,7 +16,6 @@ export class CommentRoutes extends BaseRoutes {
   }
 
   addRoutes() {
-    // Public
     this.api.get(
       Endpoints.comments.collections,
       validators.collections,
@@ -25,7 +24,9 @@ export class CommentRoutes extends BaseRoutes {
 
     this.api.use(isAuthorized)
     this.api.post(Endpoints.comments.create, validators.create, this.create)
-    this.api.delete(Endpoints.comments.delete, validators.deleted, this.delete)
+    this.api
+      .route(Endpoints.comments.document)
+      .delete(validators.deleted, this.delete)
   }
 
   create: RequestHandler = (req: Request, res: Response) =>

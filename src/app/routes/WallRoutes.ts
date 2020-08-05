@@ -13,26 +13,19 @@ export class WallRoutes extends BaseRoutes {
   }
 
   addRoutes() {
-    // Private
     this.api.post(
       Endpoints.walls.create,
       [isAuthorized, ...validators.create],
       this.create
     )
     this.api.get(Endpoints.walls.collections, isAuthorized, this.collections)
-    this.api.post(
-      Endpoints.walls.leave,
-      [isAuthorized, ...validators.leave],
-      this.leave
-    )
-    this.api.post(
-      Endpoints.walls.join,
-      [isAuthorized, ...validators.leave],
-      this.join
-    )
+    this.api
+      .route(Endpoints.walls.join)
+      .all([isAuthorized, ...validators.leave])
+      .post(this.join)
+      .delete(this.leave)
 
-    // Public
-    this.api.get(Endpoints.walls.get, isLogged, this.get)
+    this.api.route(Endpoints.walls.document).get(isLogged, this.get)
   }
 
   create: RequestHandler = (req: Request, res: Response) =>

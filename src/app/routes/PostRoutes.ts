@@ -13,32 +13,25 @@ export class PostRoutes extends BaseRoutes {
   }
 
   addRoutes() {
-    // Private
     this.api.get(Endpoints.posts.collections, isAuthorized, this.collections)
-    this.api.post(
-      Endpoints.posts.like,
-      [isAuthorized, ...validators.like],
-      this.like
-    )
-    this.api.post(
-      Endpoints.posts.unlike,
-      [isAuthorized, ...validators.like],
-      this.unlike
-    )
+
+    this.api
+      .route(Endpoints.posts.like)
+      .all([isAuthorized, ...validators.like])
+      .post(this.like)
+      .delete(this.unlike)
+
     this.api.post(
       Endpoints.posts.create,
       [isAuthorized, ...validators.create],
       this.create
     )
-    this.api.delete(
-      Endpoints.posts.delete,
-      [isAuthorized, ...validators.deleted],
-      this.delete
-    )
 
-    // Public
     this.api.get(Endpoints.posts.relatedPosts, isLogged, this.relatedPosts)
-    this.api.get(Endpoints.posts.get, isLogged, this.get)
+    this.api
+      .route(Endpoints.posts.document)
+      .get(isLogged, this.get)
+      .delete([isAuthorized, ...validators.deleted], this.delete)
   }
 
   create: RequestHandler = (req: Request, res: Response) =>
