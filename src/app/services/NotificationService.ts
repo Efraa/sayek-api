@@ -22,7 +22,7 @@ export class NotificationService {
 
   async send(payload: NotificationDTO) {}
 
-  async collections(query: {
+  async collection(query: {
     userId: number
     perPage?: number
     page?: number

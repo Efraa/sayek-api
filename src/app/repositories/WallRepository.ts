@@ -45,7 +45,7 @@ export class WallRepository {
       .then(() => ({ wallId, memberId }))
       .catch(() => undefined)
 
-  collections = async (query: {
+  collection = async (query: {
     page: number
     perPage: number
     userId: number

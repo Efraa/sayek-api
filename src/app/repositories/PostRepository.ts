@@ -47,7 +47,7 @@ export class PostRepository {
     }
   }
 
-  collections = async (query: {
+  collection = async (query: {
     page: number
     perPage: number
     userId: number

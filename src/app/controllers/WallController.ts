@@ -53,11 +53,11 @@ export class WallController {
     return joined
   }
 
-  collections = async (query: {
+  collection = async (query: {
     page?: number
     perPage?: number
     userId: number
-  }) => this._wallService.collections(query)
+  }) => this._wallService.collection(query)
 
   get = async (wallId: number, userId?: number) =>
     this._wallService.get(wallId, userId)

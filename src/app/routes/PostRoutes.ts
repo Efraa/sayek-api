@@ -13,7 +13,7 @@ export class PostRoutes extends BaseRoutes {
   }
 
   addRoutes() {
-    this.api.get(Endpoints.posts.collections, isAuthorized, this.collections)
+    this.api.get(Endpoints.posts.collection, isAuthorized, this.collection)
 
     this.api
       .route(Endpoints.posts.like)
@@ -53,19 +53,19 @@ export class PostRoutes extends BaseRoutes {
       res,
     })
 
-  collections: RequestHandler = (req: Request, res: Response) =>
+  collection: RequestHandler = (req: Request, res: Response) =>
     RouteMethod.build({
       resolve: async () => {
         const { page, perPage } = req.query
-        const collections = await this._postController.collections({
+        const collection = await this._postController.collection({
           userId: req.userLogged?.id,
           page: page as any,
           perPage: perPage as any,
         })
-        if (collections)
+        if (collection)
           return res
             .status(statusCodes.OK)
-            .send(ResponseHandler.build(collections, false))
+            .send(ResponseHandler.build(collection, false))
       },
       req,
       res,

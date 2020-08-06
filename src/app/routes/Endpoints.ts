@@ -9,15 +9,14 @@ const users = {
 
 const walls = {
   resource: '/walls',
-  create: '/',
-  collections: '/',
+  collection: '/',
   join: '/:wallId/join',
   document: '/:wallId',
 }
 
 const posts = {
   resource: '/posts',
-  collections: '/',
+  collection: '/',
   like: '/:postId/like',
   create: '/:wallId',
   relatedPosts: '/related-posts',
@@ -26,8 +25,7 @@ const posts = {
 
 const comments = {
   resource: '/comments',
-  create: '/:postId',
-  collections: '/:postId',
+  collection: '/:postId',
   document: '/:commentId',
 }
 

@@ -31,14 +31,14 @@ export class CommentService {
       perPage: perPage || config.PAGINATION.COMMENTS_POSTS_PER_PAGE,
       postId,
     }
-    const collections = await this._commentRepository.commentOnPost(options)
+    const collection = await this._commentRepository.commentOnPost(options)
 
     return {
-      comments: this._commentMapper.mapListToDTO(collections.rows),
-      all: collections.all,
-      pages: collections.pages,
+      comments: this._commentMapper.mapListToDTO(collection.rows),
+      all: collection.all,
+      pages: collection.pages,
       nextPage:
-        options.page >= collections.pages
+        options.page >= collection.pages
           ? false
           : parseInt(options.page as any) + 1,
     }

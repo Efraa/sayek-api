@@ -36,36 +36,36 @@ export class PostService {
       perPage: perPage || config.PAGINATION.PER_PAGE,
       wallId,
     }
-    const collections = await this._postRepository.postOnWall(options)
+    const collection = await this._postRepository.postOnWall(options)
 
     const output = {
       posts: [] as PostDTO[],
-      all: collections.all,
-      pages: collections.pages,
+      all: collection.all,
+      pages: collection.pages,
       nextPage:
-        options.page >= collections.pages
+        options.page >= collection.pages
           ? false
           : parseInt(options.page as any) + 1,
     }
 
-    if (userId && collections.rows[0]) {
+    if (userId && collection.rows[0]) {
       const likes = await this._postRepository.likesMany({
         userId,
-        postsIds: collections.rows.map(post => post.id),
+        postsIds: collection.rows.map(post => post.id),
       })
 
       output.posts = this._postMapper.mapListWithLikesToDTO(
-        collections.rows,
+        collection.rows,
         likes
       )
-    } else if (collections.rows[0]) {
-      output.posts = this._postMapper.mapListToDTO(collections.rows)
+    } else if (collection.rows[0]) {
+      output.posts = this._postMapper.mapListToDTO(collection.rows)
     }
 
     return output
   }
 
-  collections = async (query: {
+  collection = async (query: {
     userId: number
     page?: number
     perPage?: number
@@ -76,20 +76,20 @@ export class PostService {
       perPage: perPage || config.PAGINATION.POST_PER_PAGE,
       userId,
     }
-    const collections = await this._postRepository.collections(options)
+    const collection = await this._postRepository.collection(options)
 
-    if (!collections.rows[0])
+    if (!collection.rows[0])
       throw ErrorHandler.build(
         statusCodes.NOT_FOUND,
         PostMessages.POST_NOT_FOUND
       )
 
     return {
-      posts: this._postMapper.mapListToDTO(collections.rows),
-      all: collections.all,
-      pages: collections.pages,
+      posts: this._postMapper.mapListToDTO(collection.rows),
+      all: collection.all,
+      pages: collection.pages,
       nextPage:
-        options.page >= collections.pages
+        options.page >= collection.pages
           ? false
           : parseInt(options.page as any) + 1,
     }
@@ -126,21 +126,21 @@ export class PostService {
 
   relatedPosts = async (query: { page?: number; perPage?: number }) => {
     const { page, perPage } = query
-    const collections = await this._postRepository.relatedPosts({
+    const collection = await this._postRepository.relatedPosts({
       page: page || config.PAGINATION.PAGE,
       perPage: perPage || config.PAGINATION.PER_PAGE,
     })
 
-    if (!collections.rows[0])
+    if (!collection.rows[0])
       throw ErrorHandler.build(
         statusCodes.NOT_FOUND,
         PostMessages.POST_NOT_FOUND
       )
 
     return {
-      posts: this._postMapper.mapListToDTO(collections.rows),
-      all: collections.all,
-      pages: collections.pages,
+      posts: this._postMapper.mapListToDTO(collection.rows),
+      all: collection.all,
+      pages: collection.pages,
     }
   }
 

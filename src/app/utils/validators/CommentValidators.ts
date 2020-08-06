@@ -12,7 +12,7 @@ const create = [
   }),
 ]
 
-const collections = [
+const collection = [
   param('postId', VALIDATOR.POST_ID).isLength({
     min: 1,
   }),
@@ -24,4 +24,4 @@ const deleted = [
   }),
 ]
 
-export const validators = { create, collections, deleted }
+export const validators = { create, collection, deleted }

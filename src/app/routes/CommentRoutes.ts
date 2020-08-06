@@ -16,17 +16,14 @@ export class CommentRoutes extends BaseRoutes {
   }
 
   addRoutes() {
-    this.api.get(
-      Endpoints.comments.collections,
-      validators.collections,
-      this.commentOnPost
-    )
+    this.api
+      .route(Endpoints.comments.collection)
+      .get(validators.collection, this.commentOnPost)
+      .post([isAuthorized, ...validators.create], this.create)
 
-    this.api.use(isAuthorized)
-    this.api.post(Endpoints.comments.create, validators.create, this.create)
     this.api
       .route(Endpoints.comments.document)
-      .delete(validators.deleted, this.delete)
+      .delete([isAuthorized, ...validators.deleted], this.delete)
   }
 
   create: RequestHandler = (req: Request, res: Response) =>
@@ -51,15 +48,15 @@ export class CommentRoutes extends BaseRoutes {
     RouteMethod.build({
       resolve: async () => {
         const { page, perPage } = req.query
-        const collections = await this._commentController.commentOnPost({
+        const collection = await this._commentController.commentOnPost({
           postId: parseInt(req.params.postId),
           page: page as any,
           perPage: perPage as any,
         })
-        if (collections)
+        if (collection)
           return res
             .status(statusCodes.OK)
-            .send(ResponseHandler.build(collections, false))
+            .send(ResponseHandler.build(collection, false))
       },
       req,
       res,

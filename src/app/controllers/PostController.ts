@@ -19,11 +19,11 @@ export class PostController {
       })
       .then(async post => this._postService.create(post))
 
-  collections = async (query: {
+  collection = async (query: {
     page?: number
     perPage?: number
     userId: number
-  }) => this._postService.collections(query)
+  }) => this._postService.collection(query)
 
   relatedPosts = async (query: { page?: number; perPage?: number }) =>
     this._postService.relatedPosts(query)

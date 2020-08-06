@@ -13,12 +13,11 @@ export class WallRoutes extends BaseRoutes {
   }
 
   addRoutes() {
-    this.api.post(
-      Endpoints.walls.create,
-      [isAuthorized, ...validators.create],
-      this.create
-    )
-    this.api.get(Endpoints.walls.collections, isAuthorized, this.collections)
+    this.api
+      .route(Endpoints.walls.collection)
+      .get(isAuthorized, this.collection)
+      .post([isAuthorized, ...validators.create], this.create)
+
     this.api
       .route(Endpoints.walls.join)
       .all([isAuthorized, ...validators.leave])
@@ -69,19 +68,19 @@ export class WallRoutes extends BaseRoutes {
       res,
     })
 
-  collections: RequestHandler = (req: Request, res: Response) =>
+  collection: RequestHandler = (req: Request, res: Response) =>
     RouteMethod.build({
       resolve: async () => {
         const { page, perPage } = req.query
-        const collections = await this._wallController.collections({
+        const collection = await this._wallController.collection({
           userId: req.userLogged?.id,
           page: page as any,
           perPage: perPage as any,
         })
-        if (collections)
+        if (collection)
           return res
             .status(statusCodes.OK)
-            .send(ResponseHandler.build(collections, false))
+            .send(ResponseHandler.build(collection, false))
       },
       req,
       res,
