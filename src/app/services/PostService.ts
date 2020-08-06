@@ -3,7 +3,7 @@ import { Post } from 'src/database/entities/Post'
 import { PostMapper } from '../domain/mappers/PostMapper'
 import { PostRepository } from '../repositories/PostRepository'
 import { PostDTO } from '../domain/dtos/PostDTO'
-import { ErrorHandler, statusCodes } from '../../http'
+import { ErrorHandler, statusCodes } from '../../infrastructure/http'
 import { PostMessages } from '../utils/messages/PostMessages'
 import { CommentService } from './CommentService'
 

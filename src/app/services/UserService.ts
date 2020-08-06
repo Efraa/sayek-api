@@ -2,7 +2,7 @@ import { User } from 'src/database/entities/User'
 import { UserMapper } from '../domain/mappers/UserMapper'
 import { UserRepository } from '../repositories/UserRepository'
 import { UserDTO } from '../domain/dtos/UserDTO'
-import { generateUsername } from '../../helpers/username'
+import { generateUsername } from '../../infrastructure/helpers/username'
 
 export class UserService {
   constructor(

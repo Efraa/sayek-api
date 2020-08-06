@@ -1,7 +1,6 @@
 import { Response } from 'express'
 import { Secret, verify, sign } from 'jsonwebtoken'
-// import { Endpoints } from '../app/routes/Endpoints'
-import { UserDTO } from '../app/domain/dtos/UserDTO'
+import { UserDTO } from '../../app/domain/dtos/UserDTO'
 
 export const AuthToken = {
   verifyToken: async (token: string): Promise<any> =>
@@ -37,7 +36,6 @@ export const AuthToken = {
     return res.cookie('_cxtk', token, {
       httpOnly: true,
       expires,
-      // path: Endpoints.users.refreshToken,
     })
   },
 

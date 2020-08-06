@@ -2,7 +2,7 @@ import { Response, NextFunction, Request } from 'express'
 import { ResponseHandler, statusCodes } from '../http'
 import { AuthToken } from '../helpers/AuthToken'
 import { Logger } from '../helpers/logging/Logger'
-import { UserMessages } from '../app/utils/messages/UserMessages'
+import { UserMessages } from '../../app/utils/messages/UserMessages'
 
 export const isAuthorized = async (
   req: Request,

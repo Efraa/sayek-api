@@ -2,19 +2,19 @@ import { Router } from 'express'
 import { BaseRoutes } from './BaseRoutes'
 
 // Modules
-import { userModule } from '../app/modules/UserModule'
-import { wallModule } from '../app/modules/WallModule'
-import { postModule } from '../app/modules/PostModule'
-import { commentModule } from '../app/modules/CommentModule'
-import { notificationModule } from '../app/modules/NotificationModule'
+import { userModule } from '../../app/modules/UserModule'
+import { wallModule } from '../../app/modules/WallModule'
+import { postModule } from '../../app/modules/PostModule'
+import { commentModule } from '../../app/modules/CommentModule'
+import { notificationModule } from '../../app/modules/NotificationModule'
 
 // Routes
-import { Endpoints } from '../app/routes/Endpoints'
-import { UserRoutes } from '../app/routes/UserRoutes'
-import { WallRoutes } from '../app/routes/WallRoutes'
-import { PostRoutes } from '../app/routes/PostRoutes'
-import { CommentRoutes } from '../app/routes/CommentRoutes'
-import { NotificationRoutes } from '../app/routes/NotificationRoutes'
+import { Endpoints } from '../../app/routes/Endpoints'
+import { UserRoutes } from '../../app/routes/UserRoutes'
+import { WallRoutes } from '../../app/routes/WallRoutes'
+import { PostRoutes } from '../../app/routes/PostRoutes'
+import { CommentRoutes } from '../../app/routes/CommentRoutes'
+import { NotificationRoutes } from '../../app/routes/NotificationRoutes'
 
 export class Routes {
   static router: Router = Router()

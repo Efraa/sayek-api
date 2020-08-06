@@ -1,9 +1,13 @@
-import { BaseRoutes } from '../../http/BaseRoutes'
-import { ResponseHandler, RouteMethod, statusCodes } from '../../http'
+import { BaseRoutes } from '../../infrastructure/http/BaseRoutes'
+import {
+  ResponseHandler,
+  RouteMethod,
+  statusCodes,
+} from '../../infrastructure/http'
 import { Response, RequestHandler, Request } from 'express'
 import { CommentController } from '../controllers/CommentController'
 import { validators } from '../utils/validators/CommentValidators'
-import { isAuthorized } from '../../middlewares/AuthorizedMiddle'
+import { isAuthorized } from '../../infrastructure/middlewares/AuthorizedMiddle'
 import { Endpoints } from './Endpoints'
 
 export class CommentRoutes extends BaseRoutes {

@@ -1,6 +1,6 @@
 import { WallService } from '../services/WallService'
 import { UserService } from '../services/UserService'
-import { ErrorHandler, statusCodes } from '../../http'
+import { ErrorHandler, statusCodes } from '../../infrastructure/http'
 import { WallMessages } from '../utils/messages/WallMessages'
 import { WallDTO } from '../domain/dtos/WallDTO'
 import { User } from '../../database/entities/User'

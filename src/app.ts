@@ -1,11 +1,15 @@
 import 'reflect-metadata'
 import { config } from './config'
 import { DatabaseConnection } from './database/DatabaseConnection'
-import { cors, security, securityHeaders } from './helpers/appSecurity'
+import {
+  cors,
+  security,
+  securityHeaders,
+} from './infrastructure/helpers/appSecurity'
 import express, { Application } from 'express'
 import compression from 'compression'
-import { passport } from './middlewares/passport'
-import { Routes } from './http'
+import { passport } from './infrastructure/middlewares/passport'
+import { Routes } from './infrastructure/http'
 import morgan from 'morgan'
 import cookieParser from 'cookie-parser'
 

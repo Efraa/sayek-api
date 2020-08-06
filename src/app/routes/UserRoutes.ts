@@ -1,18 +1,21 @@
-import { BaseRoutes } from '../../http/BaseRoutes'
+import { BaseRoutes } from '../../infrastructure/http/BaseRoutes'
 import {
   ResponseHandler,
   RouteMethod,
   statusCodes,
   ErrorHandler,
-} from '../../http'
+} from '../../infrastructure/http'
 import { Response, RequestHandler, Request } from 'express'
 import { UserController } from '../controllers/UserController'
-import { facebookMiddle, googleMiddle } from '../../middlewares/passport'
+import {
+  facebookMiddle,
+  googleMiddle,
+} from '../../infrastructure/middlewares/passport'
 import { Endpoints } from './Endpoints'
-import { AuthToken } from '../../helpers'
+import { AuthToken } from '../../infrastructure/helpers'
 import { UserMessages } from '../utils/messages/UserMessages'
 import { validators } from '../utils/validators/UserValidators'
-import { isAuthorized } from '../../middlewares/AuthorizedMiddle'
+import { isAuthorized } from '../../infrastructure/middlewares/AuthorizedMiddle'
 
 export class UserRoutes extends BaseRoutes {
   constructor(modulePath: string, private _userController: UserController) {

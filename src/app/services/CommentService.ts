@@ -1,5 +1,5 @@
 import { config } from '../../config'
-import { Comment } from 'src/database/entities/Comment'
+import { Comment } from '../../database/entities/Comment'
 import { CommentMapper } from '../domain/mappers/CommentMapper'
 import { CommentRepository } from '../repositories/CommentRepository'
 import { CommentDTO } from '../domain/dtos/CommentDTO'

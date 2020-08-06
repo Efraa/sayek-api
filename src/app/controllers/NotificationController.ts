@@ -1,5 +1,5 @@
 import { NotificationService } from '../services/NotificationService'
-import { SocketServer } from '../../socket/SocketServer'
+import { SocketServer } from '../../infrastructure/socket/SocketServer'
 
 export class NotificationController {
   constructor(

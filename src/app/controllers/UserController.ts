@@ -1,7 +1,7 @@
 import { UserService } from '../services/UserService'
-import { AuthToken } from '../../helpers'
-import { clientURI } from '../../helpers/clientURI'
-import { ErrorHandler, statusCodes } from '../../http'
+import { AuthToken } from '../../infrastructure/helpers'
+import { clientURI } from '../../infrastructure/helpers/clientURI'
+import { ErrorHandler, statusCodes } from '../../infrastructure/http'
 import { UserMessages } from '../utils/messages/UserMessages'
 import { User } from '../../database/entities/User'
 

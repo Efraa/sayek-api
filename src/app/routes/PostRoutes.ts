@@ -1,9 +1,16 @@
-import { BaseRoutes } from '../../http/BaseRoutes'
-import { ResponseHandler, RouteMethod, statusCodes } from '../../http'
+import { BaseRoutes } from '../../infrastructure/http/BaseRoutes'
+import {
+  ResponseHandler,
+  RouteMethod,
+  statusCodes,
+} from '../../infrastructure/http'
 import { Response, RequestHandler, Request } from 'express'
 import { PostController } from '../controllers/PostController'
 import { validators } from '../utils/validators/PostValidators'
-import { isAuthorized, isLogged } from '../../middlewares/AuthorizedMiddle'
+import {
+  isAuthorized,
+  isLogged,
+} from '../../infrastructure/middlewares/AuthorizedMiddle'
 import { Endpoints } from './Endpoints'
 
 export class PostRoutes extends BaseRoutes {

@@ -1,5 +1,5 @@
 import { CommentService } from '../services/CommentService'
-import { SocketServer } from '../../socket/SocketServer'
+import { SocketServer } from '../../infrastructure/socket/SocketServer'
 import sanitizeHtml from 'sanitize-html'
 
 export class CommentController {

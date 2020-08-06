@@ -1,6 +1,6 @@
 import { PostService } from '../services/PostService'
-import { ErrorHandler, statusCodes } from '../../http'
-import { sanitizeData } from '../../helpers/appSecurity'
+import { ErrorHandler, statusCodes } from '../../infrastructure/http'
+import { sanitizeData } from '../../infrastructure/helpers/appSecurity'
 import { PostMessages } from '../utils/messages/PostMessages'
 
 export class PostController {

@@ -3,7 +3,7 @@ import { Wall } from '../../database/entities/Wall'
 import { WallMapper } from '../domain/mappers/WallMapper'
 import { WallRepository } from '../repositories/WallRepository'
 import { WallDTO } from '../domain/dtos/WallDTO'
-import { ErrorHandler, statusCodes } from '../../http'
+import { ErrorHandler, statusCodes } from '../../infrastructure/http'
 import { WallMessages } from '../utils/messages/WallMessages'
 import { PostService } from './PostService'
 

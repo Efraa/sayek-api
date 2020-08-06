@@ -1,6 +1,6 @@
 import { app, initializeApplication } from './app'
 import http, { Server } from 'http'
-import { SocketServer } from './socket/SocketServer'
+import { SocketServer } from './infrastructure/socket/SocketServer'
 
 const server: Server = http.createServer(app)
 const socket = new SocketServer(server)

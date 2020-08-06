@@ -1,4 +1,4 @@
-import { config } from '../config'
+import { config } from '../../config'
 import c from 'cors'
 import lusca from 'lusca'
 import xss from 'sanitize-html'
