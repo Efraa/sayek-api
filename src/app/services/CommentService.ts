@@ -34,13 +34,15 @@ export class CommentService {
     const collection = await this._commentRepository.commentOnPost(options)
 
     return {
-      comments: this._commentMapper.mapListToDTO(collection.rows),
-      all: collection.all,
-      pages: collection.pages,
-      nextPage:
-        options.page >= collection.pages
-          ? false
-          : parseInt(options.page as any) + 1,
+      data: this._commentMapper.mapListToDTO(collection.rows),
+      meta: {
+        all: collection.all,
+        pages: collection.pages,
+        nextPage:
+          options.page >= collection.pages
+            ? false
+            : parseInt(options.page as any) + 1,
+      },
     }
   }
 

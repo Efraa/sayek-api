@@ -18,9 +18,8 @@ export class PostService {
     this._postMapper.mapToEntity(postPayload)
 
   create = async (postEntity: Post): Promise<PostDTO> =>
-    this._postRepository
-      .save(postEntity)
-      .then(post => this._postMapper.mapToDTO(post))
+    this._postRepository.save(postEntity)
+  // .then(post => this._postMapper.mapToDTO(post as any))
 
   getById = async (id: number) => this._postRepository.getById(id)
 
@@ -39,13 +38,15 @@ export class PostService {
     const collection = await this._postRepository.postOnWall(options)
 
     const output = {
-      posts: [] as PostDTO[],
-      all: collection.all,
-      pages: collection.pages,
-      nextPage:
-        options.page >= collection.pages
-          ? false
-          : parseInt(options.page as any) + 1,
+      data: [] as PostDTO[],
+      meta: {
+        all: collection.all,
+        pages: collection.pages,
+        nextPage:
+          options.page >= collection.pages
+            ? false
+            : parseInt(options.page as any) + 1,
+      },
     }
 
     if (userId && collection.rows[0]) {
@@ -54,12 +55,12 @@ export class PostService {
         postsIds: collection.rows.map(post => post.id),
       })
 
-      output.posts = this._postMapper.mapListWithLikesToDTO(
-        collection.rows,
-        likes
-      )
+      // output.data = this._postMapper.mapListWithLikesToDTO(
+      //   collection.rows,
+      //   likes
+      // )
     } else if (collection.rows[0]) {
-      output.posts = this._postMapper.mapListToDTO(collection.rows)
+      output.data = this._postMapper.mapListToDTO(collection.rows)
     }
 
     return output
@@ -85,23 +86,24 @@ export class PostService {
       )
 
     return {
-      posts: this._postMapper.mapListToDTO(collection.rows),
-      all: collection.all,
-      pages: collection.pages,
-      nextPage:
-        options.page >= collection.pages
-          ? false
-          : parseInt(options.page as any) + 1,
+      data: this._postMapper.mapListToDTO(collection.rows),
+      meta: {
+        all: collection.all,
+        pages: collection.pages,
+        nextPage:
+          options.page >= collection.pages
+            ? false
+            : parseInt(options.page as any) + 1,
+      },
     }
   }
 
   get = async (postId: number, userId?: number) => {
-    const { comments, all, pages } = await this._commentsService.commentOnPost({
+    let metaUserLogged: any
+    const comments = await this._commentsService.commentOnPost({
       postId,
     })
-    let post = await this._postRepository
-      .get(postId)
-      .then(post => this._postMapper.mapToDTO(post as Post))
+    const post = await this._postRepository.get(postId)
 
     if (!post)
       throw ErrorHandler.build(
@@ -110,18 +112,16 @@ export class PostService {
       )
 
     if (userId) {
-      const isLiked = await this._postRepository.isLiked(postId, userId)
-      if (isLiked) post = { ...post, isLiked: true }
+      await this._postRepository
+        .isLiked(postId, userId)
+        .then(liked => (liked ? (metaUserLogged = { liked: true }) : null))
     }
 
-    return {
+    return this._postMapper.mapToDTO({
       ...post,
-      comments: {
-        ...comments,
-        all,
-        pages,
-      },
-    }
+      comments,
+      metaUserLogged,
+    })
   }
 
   relatedPosts = async (query: { page?: number; perPage?: number }) => {
@@ -138,9 +138,11 @@ export class PostService {
       )
 
     return {
-      posts: this._postMapper.mapListToDTO(collection.rows),
-      all: collection.all,
-      pages: collection.pages,
+      data: this._postMapper.mapListToDTO(collection.rows),
+      meta: {
+        all: collection.all,
+        pages: collection.pages,
+      },
     }
   }
 

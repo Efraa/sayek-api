@@ -56,38 +56,49 @@ export class WallService {
       )
 
     return {
-      walls: this._wallMapper.mapListToDTO(collection.rows),
-      all: collection.all,
-      pages: collection.pages,
-      nextPage:
-        options.page >= collection.pages
-          ? false
-          : parseInt(options.page as any) + 1,
+      data: this._wallMapper.mapListToDTO(collection.rows),
+      meta: {
+        all: collection.all,
+        pages: collection.pages,
+        nextPage:
+          options.page >= collection.pages
+            ? false
+            : parseInt(options.page as any) + 1,
+      },
     }
   }
 
   get = async (wallId: number, userId?: number) => {
-    const { posts, all, pages } = await this._postService.postOnWall({
+    const posts = await this._postService.postOnWall({
       wallId,
       userId,
     })
-    const wall = await this._wallRepository
-      .get(wallId)
-      .then(wall => this._wallMapper.mapToDTO(wall as Wall))
+    // let wall = await this._wallRepository
+    //   .get(wallId)
+    //   .then(wall => this._wallMapper.mapToDTO(wall as Wall))
 
-    if (!wall)
-      throw ErrorHandler.build(
-        statusCodes.NOT_FOUND,
-        WallMessages.WALL_NOT_FOUND
-      )
+    // if (!wall)
+    //   throw ErrorHandler.build(
+    //     statusCodes.NOT_FOUND,
+    //     WallMessages.WALL_NOT_FOUND
+    //   )
+
+    // if (userId) {
+    //   const member = await this.memberIsJoined(wallId, userId)
+    //   // if (member)
+    //   //   wall = {
+    //   //     ...wall,
+    //   //     included: {
+    //   //       userLogged: {
+    //   //         isMember: true,
+    //   //       },
+    //   //     },
+    //   //   }
+    // }
 
     return {
-      ...wall,
-      posts: {
-        ...posts,
-        all,
-        pages,
-      },
+      // ...wall,
+      posts,
     }
   }
 }
